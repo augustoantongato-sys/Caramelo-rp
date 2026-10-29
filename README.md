@@ -14,6 +14,9 @@
 - [ ] Veículos dirigíveis.
 - [x] Protótipos de NPCs, missões, economia e territórios em desenvolvimento.
 - [x] Dez modelos visuais estilizados de equipamentos com formas arredondadas e seleção por teclado.
+- [x] Ambientação ampliada: pedestres decorativos, carros de cenário, moto, bicicleta, hatch de serviço com escada no teto, postes, abrigo de ônibus e skyline urbano.
+- [x] Detalhes adicionais na favela: caixas d'água elevadas e vergalhões aparentes nas lajes.
+- [x] Personagem procedural com braços e pernas separados, animação simples de caminhada/corrida e pose de mira.
 - [ ] Salvamento de progresso.
 - [ ] Exportação e testes do APK Android.
 
