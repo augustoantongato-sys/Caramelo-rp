@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/city.gd" id="1_city"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="2_player"]
+
+[node name="CarameloRP" type="Node3D"]
+script = ExtResource("1_city")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+position = Vector3(0, 1.1, 8)
+script = ExtResource("2_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_player")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.38
+height = 1.8
