@@ -12,7 +12,8 @@
 - [x] Movimento de caminhada, corrida e pulo por teclado.
 - [ ] Controles de toque e interface mobile.
 - [ ] Veículos dirigíveis.
-- [ ] NPCs, empregos, missões e economia.
+- [x] Protótipos de NPCs, missões, economia e territórios em desenvolvimento.
+- [x] Dez modelos visuais estilizados de equipamentos com formas arredondadas e seleção por teclado.
 - [ ] Salvamento de progresso.
 - [ ] Exportação e testes do APK Android.
 
@@ -47,6 +48,10 @@ Caramelo-rp/
 | Correr | Shift |
 | Câmera | Movimento do mouse |
 | Liberar/capturar mouse | Esc / clique |
+| Selecionar pistola, revólver, rifle de precisão, submetralhadora, fuzil, metralhadora ou espingarda | 4, 5, 6, 7, 8, 9, 0 |
+| Selecionar machado, faca ou algemas | Z, X, C |
+| Disparar | Botão esquerdo do mouse / ação configurada |
+| Faca / algemas (ações existentes) | F / G, conforme configuração de entrada |
 
 ## Exportar para Android
 
