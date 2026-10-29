@@ -13,10 +13,17 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var shot_cooldown := 0.0
 var weapon_visuals: Node3D
 var selected_weapon := 0
+var character_visuals: Node3D
 
 func _ready() -> void:
     add_to_group("player")
     Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+    if has_node("Body"):
+        $Body.visible = false
+    var character_script = preload("res://scripts/player_visuals.gd")
+    character_visuals = character_script.new()
+    character_visuals.name = "CharacterVisuals"
+    add_child(character_visuals)
     _create_weapon_visuals()
 
 func _create_weapon_visuals() -> void:
@@ -37,6 +44,8 @@ func _select_weapon(index: int) -> void:
         "Pistola", "Revólver", "Rifle de precisão", "Submetralhadora",
         "Fuzil", "Metralhadora", "Espingarda", "Machado", "Faca", "Algemas"
     ]
+    if is_instance_valid(character_visuals):
+        character_visuals.call("set_weapon_visible", selected_weapon <= 6)
     GameState.show_message("Equipado: " + weapon_names[selected_weapon])
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -78,6 +87,8 @@ func _physics_process(delta: float) -> void:
         velocity.x = move_toward(velocity.x, 0, walk_speed)
         velocity.z = move_toward(velocity.z, 0, walk_speed)
     move_and_slide()
+    if is_instance_valid(character_visuals):
+        character_visuals.call("animate_motion", Vector2(velocity.x, velocity.z).length(), Input.is_action_pressed("shoot"), selected_weapon <= 6, delta)
 
     if Input.is_action_just_pressed("shoot"):
         _use_firearm()
