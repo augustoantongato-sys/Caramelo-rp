@@ -74,10 +74,10 @@ func _process(_delta: float) -> void:
     var player := get_tree().get_first_node_in_group("player")
     if not is_instance_valid(player):
         return
-    var near_contact := player.global_position.distance_to(Vector3(5, 0, -8)) < 3.5
+    var near_contact: bool = player.global_position.distance_to(Vector3(5, 0, -8)) < 3.5
     var nearby_job := job_system.get_nearby_job(player.global_position)
     var has_active_job := job_system.active_job >= 0
-    var near_management := player.global_position.distance_to(Vector3(-4, 0, -12)) < 4.0
+    var near_management: bool = player.global_position.distance_to(Vector3(-4, 0, -12)) < 4.0
     if near_management and Input.is_action_just_pressed("hire_security"):
         territory_manager.recruit("seguranca")
     if near_management and Input.is_action_just_pressed("hire_vendor"):
@@ -86,8 +86,8 @@ func _process(_delta: float) -> void:
         territory_manager.recruit("olheiros")
     if Input.is_action_just_pressed("conquer_area"):
         territory_manager.conquer("Morro do Caramelo")
-    var near_starter := player.global_position.distance_to(starter_home_door) < 3.0
-    var near_apartment := player.global_position.distance_to(apartment_door) < 3.0
+    var near_starter: bool = player.global_position.distance_to(starter_home_door) < 3.0
+    var near_apartment: bool = player.global_position.distance_to(apartment_door) < 3.0
     interaction_hint.visible = near_contact or near_starter or near_apartment or inside_property or near_management or nearby_job >= 0 or has_active_job
     if has_active_job:
         interaction_hint.text = "TRABALHO ATIVO: siga o marcador verde"
