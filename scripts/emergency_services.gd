@@ -157,8 +157,7 @@ func _person(pos: Vector3, role: String) -> void:
         arm.name = "LimbArm" + str(int(side))
         var leg := _box(p,Vector3(0.23,0.78,0.25),Vector3(side*0.18,0.42,0),Color(0.045,0.05,0.055))
         leg.name = "LimbLeg" + str(int(side))
-    var ai := preload("res://scripts/pedestrian_ai.gd").new()
-    p.add_child(ai)
+    p.set_script(preload("res://scripts/pedestrian_ai.gd"))
     if role == "policia":
         _cyl(p,0.22,0.12,Vector3(0,2.02,0),Color(0.025,0.03,0.035))
         _box(p,Vector3(0.22,0.16,0.08),Vector3(0,1.25,-0.19),Color(0.58,0.48,0.18))
