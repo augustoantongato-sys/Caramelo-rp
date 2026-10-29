@@ -38,7 +38,7 @@ func save_progress() -> void:
     if not is_instance_valid(player):
         GameState.show_message("Não foi possível localizar o personagem.")
         return
-    GameState.save_progress(player.global_position, apartment_owned, mission_manager.active_index, mission_manager.completed)
+    GameState.save_progress(player.global_position, apartment_owned, mission_manager.active_index, mission_manager.completed, job_system.active_job, job_system.completed_jobs)
 
 func load_progress() -> void:
     var saved := GameState.load_progress()
@@ -50,6 +50,10 @@ func load_progress() -> void:
         player.velocity = Vector3.ZERO
     apartment_owned = saved.get("apartment_owned", false)
     mission_manager.completed = saved.get("completed", {})
+    job_system.completed_jobs = saved.get("completed_jobs", {})
+    var saved_job: int = int(saved.get("active_job", -1))
+    if saved_job >= 0 and saved_job < job_system.job_points.size():
+        job_system.start_job(saved_job)
     mission_manager.active_index = saved.get("active_index", -1)
     if mission_manager.active_index >= 0 and mission_manager.active_index < mission_manager.missions.size():
         var mission: Dictionary = mission_manager.missions[mission_manager.active_index]
