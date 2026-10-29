@@ -16,9 +16,9 @@ func _ready() -> void:
     add_to_group("drivable_vehicles")
     var shape := CollisionShape3D.new()
     var box := BoxShape3D.new()
-    box.size = Vector3(2.0, 1.55, 4.4)
+    box.size = Vector3(2.0, 1.3, 4.4)
     shape.shape = box
-    shape.position.y = 0.95
+    shape.position.y = 0.65
     add_child(shape)
     for n in find_children("*", "MeshInstance3D", true, false):
         if n.name.to_lower().contains("wheel"):
