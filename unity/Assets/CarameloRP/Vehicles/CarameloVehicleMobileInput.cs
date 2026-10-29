@@ -93,7 +93,7 @@ namespace CarameloRP
             steering = Mathf.Abs(keyboardSteering) > Mathf.Abs(steering) ? keyboardSteering : steering;
             brake |= Input.GetKey(KeyCode.Space);
 #endif
-            vehicle.SetControls(throttle, steering, brake);
+            CarameloArcadeVehicle.SetControls(throttle, steering, brake);
         }
 
         private void OnDisable()
