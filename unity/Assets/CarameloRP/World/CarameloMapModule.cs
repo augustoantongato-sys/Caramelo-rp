@@ -46,7 +46,10 @@ namespace CarameloRP
         private void Ground()
         {
             Box("Ground", new Vector3(0,-1,0), new Vector3(120,2,120), C(.25f,.34f,.24f), grass);
+            // Sidewalks and road shoulders give the district a more believable street profile.
             Box("Main road", new Vector3(0,.05f,-48), new Vector3(120,.2f,12), C(.12f,.13f,.14f), asphalt);
+            Box("Road shoulder north",new Vector3(0,.08f,-55),new Vector3(120,.16f,1.5f),C(.42f,.41f,.37f),concrete);
+            Box("Road shoulder south",new Vector3(0,.08f,-41),new Vector3(120,.16f,1.5f),C(.42f,.41f,.37f),concrete);
             Box("Cross road", new Vector3(48,.05f,0), new Vector3(12,.2f,120), C(.12f,.13f,.14f), asphalt);
             for (int x=-54;x<=54;x+=9) Box("Road dash",new Vector3(x,.17f,-48),new Vector3(4,.035f,.16f),C(.9f,.82f,.58f),null);
             Box("North sidewalk",new Vector3(0,.12f,-40.5f),new Vector3(120,.3f,3),C(.55f,.54f,.5f),concrete);
@@ -76,12 +79,24 @@ namespace CarameloRP
                     Box("Roof slab",p+Vector3.up*(h*.5f+.12f),new Vector3(w+.25f,.24f,d+.25f),C(.48f,.48f,.45f),concrete);
                     Box("Front door",p+new Vector3(0,-h*.18f,-d*.5f-.05f),new Vector3(.85f,1.65f,.1f),C(.18f,.12f,.08f),null);
                     Box("Window",p+new Vector3(w*.22f,.1f,-d*.5f-.06f),new Vector3(.9f,.7f,.08f),C(.12f,.27f,.35f),null);
+                    Box("Window frame",p+new Vector3(w*.22f,.1f,-d*.5f-.12f),new Vector3(1.08f,.86f,.06f),C(.82f,.8f,.72f),null);
+                    Box("Facade band",p+new Vector3(0,-h*.34f,-d*.5f-.08f),new Vector3(w,.18f,.14f),C(.82f,.76f,.64f),null);
+                    if(rng.NextDouble()>.55) Box("Small balcony",p+new Vector3(0,.15f,-d*.5f-.55f),new Vector3(w*.55f,.16f,1.05f),C(.48f,.48f,.46f),concrete);
                     if(rng.NextDouble()>.35) Cylinder("Water tank",p+new Vector3(w*.18f,h*.5f+.85f,d*.12f),new Vector3(1,1.25f,1),C(.16f,.2f,.23f));
+                    if(rng.NextDouble()>.72) Box("Satellite dish",p+new Vector3(-w*.28f,h*.5f+.65f,d*.2f),new Vector3(.8f,.12f,.8f),C(.72f,.72f,.68f),null);
                 }
             }
             for(int i=0;i<24;i++) Box("Stair step",new Vector3(34,i*.43f,-30+i*2.2f),new Vector3(3.2f,.25f,2.2f),C(.59f,.57f,.52f),concrete);
             for(int i=0;i<7;i++) Box("Alley",new Vector3(-48+i*15,.1f,12),new Vector3(2,.2f,48),C(.42f,.4f,.36f),concrete);
+            // Utility poles, overhead cable runs and retaining-wall details add a dense hillside silhouette.
+            for(int i=0;i<9;i++)
+            {
+                float x=-48+i*12;
+                Cylinder("Favela utility pole",new Vector3(x,5,3),new Vector3(.16f,5,.16f),C(.2f,.19f,.17f));
+                Box("Utility crossbar",new Vector3(x,9.7f,3),new Vector3(1.5f,.12f,.16f),C(.18f,.17f,.15f),null);
+            }
             Box("Community court",new Vector3(-30,.18f,-30),new Vector3(25,.3f,18),C(.16f,.38f,.2f),grass);
+            for(int i=0;i<5;i++) Tree(new Vector3(48+i*3,0,35+i*5));
         }
 
         private void BuildResidential()
@@ -93,8 +108,12 @@ namespace CarameloRP
                 float w=R(12,17), d=R(10,15), h=R(5,8);
                 Box("Residential house",new Vector3(px,h*.5f,pz),new Vector3(w,h,d),C(.72f,.68f,.58f),null);
                 Box("Roof",new Vector3(px,h+.15f,pz),new Vector3(w+.3f,.3f,d+.3f),C(.35f,.25f,.2f),concrete);
+                Box("Front facade window",new Vector3(px-3,h*.62f,pz-d*.5f-.08f),new Vector3(2.1f,1.35f,.12f),C(.12f,.28f,.36f),null);
+                Box("Front facade door",new Vector3(px+3,h*.35f,pz-d*.5f-.1f),new Vector3(1.3f,2.5f,.15f),C(.24f,.16f,.1f),null);
                 Box("Garage",new Vector3(px,h*.25f,pz-d*.5f-.1f),new Vector3(3,2.5f,.15f),C(.25f,.28f,.3f),null);
                 Box("Front yard",new Vector3(px,.08f,pz-d*.5f-3),new Vector3(w,.16f,5),C(.32f,.43f,.27f),grass);
+                Box("Boundary wall",new Vector3(px,.65f,pz-d*.5f-5.6f),new Vector3(w,1.3f,.25f),C(.68f,.66f,.6f),concrete);
+                Box("Driveway",new Vector3(px+4,.12f,pz-d*.5f-3),new Vector3(4,.2f,5),C(.48f,.47f,.43f),concrete);
             }
             for(int i=0;i<10;i++) Tree(new Vector3(-48+i*10,0,25));
             Box("Neighborhood square",new Vector3(-25,.1f,35),new Vector3(30,.2f,22),C(.34f,.45f,.3f),grass);
@@ -132,6 +151,15 @@ namespace CarameloRP
             Box("Basketball court",new Vector3(-25,.2f,-25),new Vector3(35,.3f,20),C(.65f,.32f,.2f),null);
             Box("Park lawn",new Vector3(28,.08f,-25),new Vector3(35,.16f,20),C(.28f,.44f,.25f),grass);
             for(int i=0;i<5;i++) Tree(new Vector3(12+i*8,0,-35));
+            // Small apartment blocks on the district edge create a transition toward the city center.
+            for(int i=0;i<3;i++)
+            {
+                float x=-45+i*20;
+                Box("Apartment block",new Vector3(x,9,48),new Vector3(14,18,12),C(.68f,.67f,.62f),null);
+                for(int floor=0;floor<4;floor++)
+                    for(int win=0;win<3;win++)
+                        Box("Apartment window",new Vector3(x-4+win*4,3+floor*4.2f,41.85f),new Vector3(1.6f,1.8f,.1f),C(.12f,.25f,.34f),null);
+            }
         }
 
         private void BuildLandmark()
