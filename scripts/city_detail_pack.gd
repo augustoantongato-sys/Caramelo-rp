@@ -109,7 +109,10 @@ func _vehicles() -> void:
 func _pedestrians() -> void:
     var rng := RandomNumberGenerator.new()
     rng.seed = 781
-    for i in range(14):
+    # Dois NPCs com roupas inspiradas nas referências enviadas.
+    _clown_outfit_npc(Vector3(-4.5,0.1,12), Color(0.04,0.20,0.78), Color(0.96,0.96,0.94), false)
+    _clown_outfit_npc(Vector3(5.5,0.1,15), Color(0.96,0.16,0.58), Color(1.0,0.92,0.96), true)
+    for i in range(12):
         var p := Node3D.new()
         p.position = Vector3(rng.randf_range(-13,13),0.1,rng.randf_range(-18,28))
         add_child(p)
@@ -118,6 +121,38 @@ func _pedestrians() -> void:
         cyl(p,0.19,0.36,Vector3(0,1.63,0),Color(0.55,0.35,0.24))
         for side in [-1.0,1.0]:
             box(p,Vector3(0.17,0.72,0.19),Vector3(side*0.17,0.3,0),Color(0.12,0.13,0.16))
+
+func _clown_outfit_npc(pos: Vector3, main_color: Color, accent: Color, feminine: bool) -> void:
+    var p := Node3D.new()
+    p.position = pos
+    add_child(p)
+    var skin := Color(0.38,0.22,0.16) if feminine else Color(0.31,0.18,0.13)
+    # Camiseta larga, mangas, bermuda e pernas.
+    box(p,Vector3(0.78,0.88,0.34),Vector3(0,1.18,0),main_color)
+    for side in [-1.0,1.0]:
+        box(p,Vector3(0.27,0.34,0.36),Vector3(side*0.49,1.36,0),accent)
+        box(p,Vector3(0.27,0.78,0.28),Vector3(side*0.22,0.48,0),main_color)
+        box(p,Vector3(0.16,0.12,0.32),Vector3(side*0.22,0.08,-0.04),Color(0.94,0.91,0.86))
+        box(p,Vector3(0.22,0.12,0.42),Vector3(side*0.22,0.02,-0.1),accent)
+    box(p,Vector3(0.76,0.46,0.38),Vector3(0,0.68,0),main_color)
+    box(p,Vector3(0.035,0.48,0.02),Vector3(0,0.68,-0.205),accent)
+    # Estampa frontal estilizada de palhaço (sem copiar uma arte protegida).
+    var face := Color(0.96,0.94,0.9)
+    box(p,Vector3(0.43,0.28,0.025),Vector3(0,1.12,-0.19),face)
+    for side in [-1.0,1.0]:
+        box(p,Vector3(0.11,0.09,0.035),Vector3(side*0.12,1.17,-0.215),main_color.darkened(0.35))
+    cyl(p,0.075,0.035,Vector3(0,1.08,-0.235),Color(0.9,0.04,0.08))
+    # Cabeça, cabelo e braços.
+    cyl(p,0.19,0.34,Vector3(0,1.86,0),skin)
+    var hair := Color(0.035,0.025,0.02)
+    cyl(p,0.195,0.11,Vector3(0,2.03,0),hair)
+    for side in [-1.0,1.0]:
+        box(p,Vector3(0.15,0.65,0.16),Vector3(side*0.49,1.12,0),skin)
+    if feminine:
+        # Cabelo comprido nas costas.
+        box(p,Vector3(0.38,0.9,0.12),Vector3(0,1.55,0.2),hair)
+        box(p,Vector3(0.12,0.65,0.12),Vector3(-0.2,1.45,0.08),hair)
+        box(p,Vector3(0.12,0.65,0.12),Vector3(0.2,1.45,0.08),hair)
 
 func _skyline() -> void:
     var rng := RandomNumberGenerator.new()
