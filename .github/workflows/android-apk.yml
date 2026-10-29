@@ -18,11 +18,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Java and archive tools
+      - name: Install Java and Android SDK packages
         run: |
           apt-get update
           apt-get install -y --no-install-recommends openjdk-17-jdk unzip wget
           java -version
+          ANDROID_SDK_PATH="${ANDROID_HOME:-/usr/lib/android-sdk}"
+          mkdir -p "$ANDROID_SDK_PATH/cmdline-tools"
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/android-cmdline-tools.zip
+          mkdir -p /tmp/android-cmdline-tools
+          unzip -q /tmp/android-cmdline-tools.zip -d /tmp/android-cmdline-tools
+          rm -rf "$ANDROID_SDK_PATH/cmdline-tools/latest"
+          mv /tmp/android-cmdline-tools/cmdline-tools "$ANDROID_SDK_PATH/cmdline-tools/latest"
+          yes | "$ANDROID_SDK_PATH/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_PATH" --licenses >/dev/null
+          "$ANDROID_SDK_PATH/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_PATH" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_SDK_PATH=$ANDROID_SDK_PATH" >> "$GITHUB_ENV"
 
       - name: Install matching Godot export templates
         run: |
@@ -63,7 +73,7 @@ jobs:
       - name: Export Android APK
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
-          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: /github/home/.android/debug.keystore
+          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: ${{ env.HOME }}/.android/debug.keystore
           GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
           GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
         run: |
