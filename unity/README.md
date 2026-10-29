@@ -27,3 +27,11 @@ Original Brazilian city environment: hillside community, narrow streets, stairs,
 - High: 1.35 render scale, soft shadows only on supported devices.
 - Use texture compression (ASTC where supported, ETC2 fallback), LOD Groups, occlusion culling, GPU instancing and pooled traffic/NPC objects.
 - Profile on the target phone; quality presets are starting points, not guarantees.
+
+## Added prototype systems
+- `World/CarameloBrazilianCity.cs`: runtime blockout with avenue, commercial strip, stepped hillside community, water tanks, school and football pitch. Assign optional materials in Inspector and call Generate.
+- `Vehicles/CarameloArcadeVehicle.cs`: simple Rigidbody arcade vehicle controller. Build a vehicle prefab with Rigidbody and colliders; connect on-screen controls to `SetControls(throttle, steering, brake)`.
+- `Mobile/CarameloLookInput.cs`: drag-to-look input for the right side of the touch screen.
+
+## Important integration notes
+The city generator deliberately uses Unity primitives as greybox geometry. It is a functional layout prototype, not finished high-detail art. Replace these objects with original optimized meshes, texture atlases and prefabs. Add colliders to generated structures if the player should collide with them; the generator's primitive colliders are included by default. The vehicle controller is arcade prototype physics, not a production WheelCollider suspension/handling system.
