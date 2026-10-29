@@ -14,6 +14,7 @@ var shot_cooldown := 0.0
 var weapon_visuals: Node3D
 var selected_weapon := 0
 var character_visuals: Node3D
+var current_vehicle: Node3D = null
 
 func _ready() -> void:
     add_to_group("player")
@@ -82,6 +83,12 @@ func _rotate_camera(relative: Vector2) -> void:
     camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-55), deg_to_rad(35))
 
 func _physics_process(delta: float) -> void:
+    if is_instance_valid(current_vehicle):
+        global_position = current_vehicle.global_position + Vector3.UP * 1.35
+        velocity = Vector3.ZERO
+        if Input.is_action_just_pressed("interact"):
+            current_vehicle.call("_leave_vehicle")
+        return
     shot_cooldown = maxf(0.0, shot_cooldown - delta)
     if not is_on_floor():
         velocity.y -= gravity * delta
@@ -101,6 +108,8 @@ func _physics_process(delta: float) -> void:
     if is_instance_valid(character_visuals):
         character_visuals.call("animate_motion", Vector2(velocity.x, velocity.z).length(), Input.is_action_pressed("shoot"), selected_weapon <= 6, delta)
 
+    if Input.is_action_just_pressed("interact"):
+        _try_enter_vehicle()
     if Input.is_action_just_pressed("shoot"):
         _use_firearm()
     if Input.is_action_just_pressed("melee"):
@@ -153,3 +162,20 @@ func _nearest_npc(max_distance: float) -> CarameloNPC:
             best_distance = distance
             nearest = node
     return nearest
+
+func _try_enter_vehicle() -> void:
+    var nearest: Node3D
+    var best := 3.8
+    for v in get_tree().get_nodes_in_group("drivable_vehicles"):
+        if not v is Node3D:
+            continue
+        if v.get("driver") != null:
+            continue
+        var d := global_position.distance_to(v.global_position)
+        if d < best:
+            best = d
+            nearest = v
+    if nearest:
+        nearest.call("enter_vehicle", self)
+    else:
+        GameState.show_message("Chegue perto de um veículo e aperte E para entrar.")
