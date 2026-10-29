@@ -1,27 +1,50 @@
-name: Build Android APK
+name: Validate Godot project and build Android APK
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'assets/references/**'
 
 jobs:
-  export-android:
+  validate-and-export:
     runs-on: ubuntu-latest
     container:
       image: barichello/godot-ci:4.3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Create build directory
-        run: mkdir -p build
-      - name: Import project resources
+
+      - name: Install Java and archive tools
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends openjdk-17-jdk unzip wget
+          java -version
+
+      - name: Install matching Godot export templates
+        run: |
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.3.stable"
+          wget -q https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz -O /tmp/godot-templates.tpz
+          mkdir -p /tmp/godot-templates
+          unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
+          cp /tmp/godot-templates/templates/* "$HOME/.local/share/godot/export_templates/4.3.stable/"
+
+      - name: Import and validate project
         run: godot --headless --editor --path . --quit
+
       - name: Export Android APK
-        run: godot --headless --path . --export-debug "Android" build/CarameloRP.apk
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+        run: |
+          godot --headless --path . --export-debug "Android" build/CarameloRP.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Caramelo-RP-Android
           path: build/CarameloRP.apk
           if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,18 @@
+# Godot generated files
+.godot/
+.import/
+.export/
+.exported/
+*.translation
+
+# Build outputs
+build/
+dist/
+*.apk
+*.aab
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak

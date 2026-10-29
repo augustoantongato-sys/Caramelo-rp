@@ -1,85 +1,80 @@
-# Caramelo RP
+# CARAMELO RP
 
-**Caramelo RP** é um jogo de mundo aberto 3D para Android, inspirado no estilo de jogos GTA RP, ambientado em uma cidade brasileira fictícia.
+**Mundo aberto 3D • Brasil contemporâneo • Android • Offline**
 
-> Projeto em desenvolvimento. Esta versão é um protótipo inicial em Godot 4; ainda não é um APK final.
+Caramelo RP é um projeto independente de mundo aberto em terceira pessoa, ambientado em uma cidade brasileira fictícia inspirada na diversidade urbana de São Paulo. A direção é buscar escala, atmosfera e liberdade de exploração de um grande jogo de mundo aberto, com identidade visual própria e otimização para celulares Android.
 
-## Estado atual
+> **Estado honesto:** protótipo em desenvolvimento. Os sistemas e cenários atuais são majoritariamente procedurais e ainda precisam de validação visual, física e de desempenho em aparelho real. Não é um jogo AAA pronto.
 
-- [x] Projeto Godot 4 configurado com renderização Compatibility, adequada para testar em dispositivos móveis.
-- [x] Primeiro bairro gerado por código: avenida, calçadas, prédios, casas em morro, bar, mercadinho e postes.
-- [x] Personagem 3D controlável com câmera em terceira pessoa.
-- [x] Movimento de caminhada, corrida e pulo por teclado.
-- [x] Controles de toque básicos para Android, incluindo botão Entrar/Sair de veículos.
-- [x] Veículos dirigíveis: viatura, SUV/van blindada, caminhões de bombeiros e ambulância; entrar/sair por interação e direção com WASD ou controles de toque.
-- [x] Protótipos de NPCs, missões, economia e territórios em desenvolvimento.
-- [x] Dez modelos visuais estilizados de equipamentos com formas arredondadas e seleção por teclado.
-- [x] Ambientação ampliada: pedestres com patrulha simples e animação procedural de braços/pernas, carros de cenário, moto, bicicleta, hatch de serviço com escada no teto, postes, abrigo de ônibus e skyline urbano.
-- [x] Serviços públicos de cenário: policiais com uniforme tático inspirado em patrulhamento especial, bombeiros, profissionais de saúde, viaturas, SUVs e vans blindadas, caminhões de bombeiros e ambulância SAMU estilizada.
-- [x] Detalhes adicionais na favela: caixas d'água elevadas e vergalhões aparentes nas lajes.
-- [x] Personagem procedural com braços e pernas separados, animação simples de caminhada/corrida e pose de mira.
-- [x] HUD inicial com vida, dinheiro, nível de procurado, mira central e informação de munição.
-- [x] Primeira camada de combate: munição no carregador, reserva, cadência por classe de arma e recarga temporizada (R no PC ou botão no Android).
-- [x] Salvamento e carregamento local de dinheiro, vida, procurado, respeito, inventário, posição, apartamento, missões e trabalhos.
-- [x] Quatro trabalhos jogáveis com pontos de início, destinos sinalizados, pagamento e ganho de respeito: entregador, motorista, mecânico e serviços urbanos.
-- [ ] Exportação e testes do APK Android.
+## Visão do jogo
 
-## Estrutura
+- Cidade brasileira com centro urbano, bairros residenciais, comércio, periferia e comunidade em morro.
+- Exploração livre em câmera de terceira pessoa.
+- Personagem, pedestres, trânsito e veículos dirigíveis.
+- Atividades, missões, empregos, economia e propriedades.
+- Polícia, serviços públicos e sistema de territórios em evolução.
+- Experiência individual/offline, com controles para Android.
+
+## Estrutura do projeto
 
 ```
 Caramelo-rp/
+├── .github/workflows/       # automação de validação e exportação
+├── assets/
+│   ├── audio/               # sons originais/licenciados
+│   ├── materials/           # materiais e texturas
+│   ├── models/              # modelos 3D
+│   ├── ui/                  # ícones e elementos da interface
+│   └── references/          # referências de produção, não usadas no jogo
+├── docs/                    # visão, direção de arte e planejamento
+├── scenes/                  # cenas Godot
+├── scripts/                 # lógica GDScript
 ├── project.godot
-├── scenes/
-│   ├── main.tscn
-│   └── player.tscn
-├── scripts/
-│   ├── city.gd
-│   └── player.gd
-└── (referências visuais e recursos enviados ao repositório)
+└── export_presets.cfg
 ```
 
-## Abrir o projeto
+## Abrir no Godot
 
-1. Instale o **Godot Engine 4.x** (a configuração atual foi criada para Godot 4.3).
-2. Baixe o repositório pelo botão **Code → Download ZIP** ou clone:
+1. Instale Godot **4.3**.
+2. Baixe o repositório em **Code → Download ZIP** ou clone:
    `git clone https://github.com/augustoantongato-sys/Caramelo-rp.git`
-3. Abra o Godot Project Manager e importe a pasta do projeto selecionando `project.godot`.
-4. Execute a cena principal com **F6/F5** ou o botão Play.
+3. Extraia o ZIP e abra `project.godot` pelo Godot Project Manager.
+4. Aguarde a importação de recursos e execute a cena principal.
 
-## Controles atuais (PC)
+## Controles já previstos
 
-| Ação | Tecla |
+| Ação | PC |
 |---|---|
-| Andar | W, A, S, D ou setas |
+| Movimento | WASD / setas |
 | Pular | Espaço |
 | Correr | Shift |
-| Câmera | Movimento do mouse |\n| Entrar/sair de veículo | E |\n| Dirigir | W/S acelerar ou ré; A/D virar |
-| Liberar/capturar mouse | Esc / clique |
-| Selecionar pistola, revólver, rifle de precisão, submetralhadora, fuzil, metralhadora ou espingarda | 4, 5, 6, 7, 8, 9, 0 |
-| Selecionar machado, faca ou algemas | Z, X, C |
-| Disparar | Botão esquerdo do mouse / botão ATIRAR |\n| Recarregar | R / botão RECARREGAR |\n| Salvar progresso | F5 / botão SALVAR |\n| Carregar progresso | F9 / botão CARREGAR |
-| Faca / algemas (ações existentes) | F / G, conforme configuração de entrada |
+| Interagir / entrar ou sair de veículo | E |
+| Mirar e disparar | Mouse |
+| Recarregar | R |
+| Salvar / carregar | F5 / F9 |
 
-## Exportar para Android
+Os controles móveis são apresentados na interface do jogo. A disposição e a resposta tátil ainda precisam de testes em aparelhos Android.
 
-1. No Godot, instale os **Export Templates** da mesma versão do editor.
-2. Configure o Android SDK, JDK e as ferramentas exigidas pela documentação oficial do Godot.
-3. Em **Project → Export**, adicione o preset **Android**.
-4. Configure identificador do pacote, orientação e ícone.
-5. Exporte primeiro um APK de depuração e teste em um aparelho real.
+## Sistemas já presentes no protótipo
 
-Os trabalhos ficam sinalizados por marcadores coloridos no mapa. Aproxime-se de um ponto e pressione E (ou ENTRAR/SAIR no celular) para iniciar; depois alcance o marcador verde para receber o pagamento. Cada trabalho pode ser repetido até cinco vezes. O estado do trabalho ativo e os trabalhos concluídos entram no salvamento. Os veículos de emergência agora usam controlador de direção próprio: aproxime-se e pressione E (ou o botão Entrar/Sair no celular), use W/S para acelerar/frear e A/D para virar; pressione E novamente para sair. NPCs de pedestres e profissionais têm patrulha curta e animação procedural simples. O salvamento usa um arquivo local `user://caramelo_rp_save.cfg`; no Android, os botões SALVAR e CARREGAR ficam na interface. Esta implementação ainda precisa ser aberta e testada no Godot 4.3; física, colisões, câmera, desempenho e controles Android não foram validados em aparelho real. As viaturas e serviços ainda não possuem chamadas de emergência, perseguições ou missões completas.
+- Cena principal e personagem controlável.
+- Cidade procedural com avenida, prédios, casas, morro, comércio e marcos públicos.
+- Detalhes de rua, veículos de cenário, pedestres e skyline procedural.
+- Veículos dirigíveis e serviços de emergência em versão inicial.
+- HUD, vida, dinheiro, respeito, nível de procurado e munição.
+- Missões, empregos, propriedades, salvamento local e sistema de territórios em desenvolvimento.
 
-## Direção do projeto
+Consulte [o planejamento](docs/ROADMAP.md) para separar o que existe, o que precisa ser melhorado e o que ainda não foi implementado.
 
-A primeira meta é uma pequena área explorável com movimentação em terceira pessoa. Depois serão adicionados, em etapas, veículos, personagens não jogáveis, atividades, sistema de dinheiro, polícia e missões.
+## Android
 
-## Tecnologias
+O preset Android está em `export_presets.cfg`. Para exportar localmente, instale os templates de exportação da mesma versão do Godot, configure JDK e Android SDK no Editor Settings e gere primeiro um APK de depuração. A automação do GitHub Actions está em evolução; um workflow verde e um APK gerado são necessários antes de considerar a compilação validada.
 
-- Godot Engine 4.x
-- GDScript
-- 3D com renderer Compatibility
+## Padrão de qualidade e direitos
 
-## Aviso
+- Priorizar desempenho consistente em Android antes de aumentar densidade gráfica.
+- Usar modelos, texturas, sons e fontes originais ou com licença compatível.
+- Não incluir marcas, personagens, mapas ou ativos proprietários de terceiros sem autorização.
+- A inspiração em jogos de mundo aberto é de qualidade e estrutura; **Caramelo RP tem universo e identidade próprios**.
 
-Caramelo RP é um projeto independente e não é afiliado à Rockstar Games.
+Caramelo RP é independente e não é afiliado, patrocinado ou endossado pela Rockstar Games.
