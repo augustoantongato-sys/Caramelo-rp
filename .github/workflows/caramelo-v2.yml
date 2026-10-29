@@ -1,0 +1,83 @@
+name: Build Caramelo RP V2 Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [rebuild-v2]
+    paths:
+      - "v2/**"
+      - ".github/workflows/caramelo-v2.yml"
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Android SDK and Java
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends openjdk-17-jdk unzip wget
+          SDK="${ANDROID_HOME:-/usr/lib/android-sdk}"
+          mkdir -p "$SDK/cmdline-tools"
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline.zip
+          mkdir -p /tmp/cmdline
+          unzip -q /tmp/cmdline.zip -d /tmp/cmdline
+          rm -rf "$SDK/cmdline-tools/latest"
+          mv /tmp/cmdline/cmdline-tools "$SDK/cmdline-tools/latest"
+          yes | "$SDK/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK" --licenses >/dev/null
+          "$SDK/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$SDK" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_SDK_PATH=$SDK" >> "$GITHUB_ENV"
+          echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK" >> "$GITHUB_ENV"
+          echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> "$GITHUB_ENV"
+
+      - name: Install Godot 4.3 export templates
+        run: |
+          mkdir -p "$HOME/.local/share/godot/export_templates/4.3.stable"
+          wget -q https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz -O /tmp/templates.tpz
+          mkdir -p /tmp/templates
+          unzip -q /tmp/templates.tpz -d /tmp/templates
+          cp /tmp/templates/templates/* "$HOME/.local/share/godot/export_templates/4.3.stable/"
+
+      - name: Configure Android signing
+        run: |
+          mkdir -p "$HOME/.android" "$HOME/.config/godot"
+          keytool -genkeypair -noprompt -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias androiddebugkey -keypass android -keystore "$HOME/.android/debug.keystore" \
+            -storepass android -dname "CN=Android Debug,O=Android,C=US"
+          cat > "$HOME/.config/godot/editor_settings-4.tres" <<EOF
+          [gd_resource type="EditorSettings" format=3]
+          [resource]
+          export/android/debug_keystore = "$HOME/.android/debug.keystore"
+          export/android/debug_keystore_user = "androiddebugkey"
+          export/android/debug_keystore_pass = "android"
+          EOF
+          test -f "$ANDROID_SDK_PATH/platforms/android-34/android.jar"
+
+      - name: Import and validate V2 project
+        run: |
+          godot --headless --editor --path v2 --quit
+          godot --headless --path v2 --quit-after 120
+
+      - name: Export and verify APK
+        run: |
+          set -eu
+          mkdir -p v2/build
+          godot --headless --path v2 --verbose --export-debug "Android" v2/build/CarameloRP-unsigned.apk > /tmp/export.log 2>&1 || { cat /tmp/export.log; exit 1; }
+          test -s v2/build/CarameloRP-unsigned.apk
+          "$ANDROID_SDK_PATH/build-tools/34.0.0/apksigner" sign \
+            --ks "$HOME/.android/debug.keystore" --ks-key-alias androiddebugkey \
+            --ks-pass pass:android --key-pass pass:android \
+            --out v2/build/CarameloRP.apk v2/build/CarameloRP-unsigned.apk
+          "$ANDROID_SDK_PATH/build-tools/34.0.0/apksigner" verify --verbose v2/build/CarameloRP.apk
+          ls -lh v2/build/CarameloRP.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Caramelo-RP-V2-Android-APK
+          path: v2/build/CarameloRP.apk
+          if-no-files-found: error
+          retention-days: 14
