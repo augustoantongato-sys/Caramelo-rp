@@ -7,6 +7,7 @@ var money: int = 2500
 var health: float = 100.0
 var max_health: float = 100.0
 var wanted_level: int = 0
+var reputation: int = 0
 var inventory: Dictionary = {"faca": 1, "algema": 1}
 var current_mission: String = ""
 var mission_reward: int = 0
