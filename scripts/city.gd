@@ -51,7 +51,7 @@ func _make_city() -> void:
     _box(self, Vector3(16, 0.12, 100), Vector3(0, 0.02, 0), Color(0.12, 0.12, 0.13), false)
     # Sidewalks
     _box(self, Vector3(4, 0.25, 100), Vector3(-10, 0.08, 0), Color(0.55, 0.53, 0.49), true)
-    _box(self, Vector3(4, 0.25, 100), Vector3(10, 0.08, 0), Color(0.55, 0.53, 0.49), true)
+    _box(self, Vector3(4, 0.25, 240), Vector3(10, 0.08, 0), Color(0.55, 0.53, 0.49), true)
     # Buildings along the avenue
     var colors := [Color(0.78,0.62,0.48), Color(0.68,0.72,0.74), Color(0.82,0.76,0.59), Color(0.62,0.66,0.58)]
     for i in range(8):
