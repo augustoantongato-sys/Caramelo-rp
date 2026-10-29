@@ -44,11 +44,12 @@ jobs:
 
       - name: Configure Android signing
         run: |
-          mkdir -p "$HOME/.android" "$HOME/.config/godot"
+          mkdir -p "$HOME/.android" "$HOME/.config/godot" v2/.godot/editor
+          chmod -R u+rwX v2
           keytool -genkeypair -noprompt -keyalg RSA -keysize 2048 -validity 10000 \
             -alias androiddebugkey -keypass android -keystore "$HOME/.android/debug.keystore" \
             -storepass android -dname "CN=Android Debug,O=Android,C=US"
-          cat > "$HOME/.config/godot/editor_settings-4.tres" <<EOF
+          cat > "$HOME/.config/godot/editor_settings-4.3.tres" <<EOF
           [gd_resource type="EditorSettings" format=3]
           [resource]
           export/android/debug_keystore = "$HOME/.android/debug.keystore"
@@ -59,8 +60,8 @@ jobs:
 
       - name: Import and validate V2 project
         run: |
-          godot --headless --editor --path v2 --quit
-          godot --headless --path v2 --quit-after 120
+          godot --headless --editor --path v2 --quit --verbose
+          godot --headless --path v2 --quit-after 120 --verbose
 
       - name: Export and verify APK
         run: |
