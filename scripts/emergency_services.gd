@@ -143,7 +143,6 @@ func _spawn_vehicles() -> void:
 func _person(pos: Vector3, role: String) -> void:
     var p := Node3D.new()
     p.position = pos
-    add_child(p)
     var skin := Color(0.45,0.29,0.21)
     var uniform := Color(0.055,0.065,0.07)
     if role == "bombeiro":
@@ -157,7 +156,6 @@ func _person(pos: Vector3, role: String) -> void:
         arm.name = "LimbArm" + str(int(side))
         var leg := _box(p,Vector3(0.23,0.78,0.25),Vector3(side*0.18,0.42,0),Color(0.045,0.05,0.055))
         leg.name = "LimbLeg" + str(int(side))
-    p.set_script(preload("res://scripts/pedestrian_ai.gd"))
     if role == "policia":
         _cyl(p,0.22,0.12,Vector3(0,2.02,0),Color(0.025,0.03,0.035))
         _box(p,Vector3(0.22,0.16,0.08),Vector3(0,1.25,-0.19),Color(0.58,0.48,0.18))
@@ -168,6 +166,8 @@ func _person(pos: Vector3, role: String) -> void:
     else:
         _box(p,Vector3(0.68,0.1,0.36),Vector3(0,1.42,0),Color(0.05,0.34,0.78))
         _box(p,Vector3(0.13,0.48,0.04),Vector3(0,1.2,-0.19),Color(0.05,0.34,0.78))
+    p.set_script(preload("res://scripts/pedestrian_ai.gd"))
+    add_child(p)
 
 func _spawn_people() -> void:
     _person(Vector3(-3.8,0.08,-29.0),"policia")
