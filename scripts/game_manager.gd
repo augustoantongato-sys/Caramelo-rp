@@ -15,6 +15,7 @@ var apartment_owned := false
 var inside_property := false
 
 func _ready() -> void:
+    add_to_group("game_manager")
     add_child(mission_manager)
     add_child(territory_manager)
     mission_manager.mission_updated.connect(_on_mission_updated)
@@ -26,6 +27,40 @@ func _ready() -> void:
     _create_management_signs()
     _create_properties()
     _refresh_hud()
+    _restore_saved_progress()
+
+func save_progress() -> void:
+    var player := get_tree().get_first_node_in_group("player")
+    if not is_instance_valid(player):
+        GameState.show_message("Não foi possível localizar o personagem.")
+        return
+    GameState.save_progress(player.global_position, apartment_owned, mission_manager.active_index, mission_manager.completed)
+
+func load_progress() -> void:
+    var saved := GameState.load_progress()
+    if saved.is_empty():
+        return
+    var player := get_tree().get_first_node_in_group("player")
+    if is_instance_valid(player):
+        player.global_position = saved.get("position", Vector3(0, 1.2, 8))
+        player.velocity = Vector3.ZERO
+    apartment_owned = saved.get("apartment_owned", false)
+    mission_manager.completed = saved.get("completed", {})
+    mission_manager.active_index = saved.get("active_index", -1)
+    if mission_manager.active_index >= 0 and mission_manager.active_index < mission_manager.missions.size():
+        var mission: Dictionary = mission_manager.missions[mission_manager.active_index]
+        GameState.current_mission = mission.title
+        GameState.mission_reward = int(mission.reward)
+        mission_manager.mission_updated.emit(mission.title, mission.description)
+    else:
+        mission_manager.active_index = -1
+        GameState.current_mission = ""
+    _refresh_hud()
+
+func _restore_saved_progress() -> void:
+    var config := ConfigFile.new()
+    if config.load(GameState.SAVE_PATH) == OK:
+        load_progress()
 
 func _process(_delta: float) -> void:
     var player := get_tree().get_first_node_in_group("player")
