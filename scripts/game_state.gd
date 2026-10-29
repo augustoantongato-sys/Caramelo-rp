@@ -43,7 +43,7 @@ func reduce_wanted() -> void:
 func show_message(text: String) -> void:
     message_changed.emit(text)
 
-func save_progress(player_position: Vector3, apartment_is_owned: bool, mission_index: int, completed_missions: Dictionary) -> bool:
+func save_progress(player_position: Vector3, apartment_is_owned: bool, mission_index: int, completed_missions: Dictionary, active_job: int, completed_jobs: Dictionary) -> bool:
     var config := ConfigFile.new()
     config.set_value("player", "money", money)
     config.set_value("player", "health", health)
@@ -54,6 +54,8 @@ func save_progress(player_position: Vector3, apartment_is_owned: bool, mission_i
     config.set_value("world", "apartment_owned", apartment_is_owned)
     config.set_value("missions", "active_index", mission_index)
     config.set_value("missions", "completed", completed_missions)
+    config.set_value("jobs", "active_job", active_job)
+    config.set_value("jobs", "completed_jobs", completed_jobs)
     var error := config.save(SAVE_PATH)
     if error == OK:
         show_message("Progresso salvo com sucesso!")
@@ -78,5 +80,7 @@ func load_progress() -> Dictionary:
         "position": config.get_value("player", "position", Vector3(0, 1.2, 8)),
         "apartment_owned": bool(config.get_value("world", "apartment_owned", false)),
         "active_index": int(config.get_value("missions", "active_index", -1)),
-        "completed": config.get_value("missions", "completed", {})
+        "completed": config.get_value("missions", "completed", {}),
+        "active_job": int(config.get_value("jobs", "active_job", -1)),
+        "completed_jobs": config.get_value("jobs", "completed_jobs", {})
     }
