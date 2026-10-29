@@ -30,8 +30,10 @@ Original Brazilian city environment: hillside community, narrow streets, stairs,
 
 ## Added prototype systems
 - `World/CarameloBrazilianCity.cs`: runtime blockout with avenue, commercial strip, stepped hillside community, water tanks, school and football pitch. Assign optional materials in Inspector and call Generate.
-- `Vehicles/CarameloArcadeVehicle.cs`: simple Rigidbody arcade vehicle controller. Build a vehicle prefab with Rigidbody and colliders; connect on-screen controls to `SetControls(throttle, steering, brake)`.
+- `Vehicles/CarameloArcadeVehicle.cs`: simple Rigidbody arcade vehicle controller. Build a vehicle prefab with Rigidbody and colliders.
+- `Vehicles/CarameloVehicleMobileInput.cs`: touch hold-buttons for accelerate, reverse, steering and brake, plus an adapter that forwards input to the arcade vehicle. See `Assets/CarameloRP/README-MOBILE-CONTROLS.md`.
+- `Interaction/CarameloInteractable.cs` and `Interaction/CarameloInteractionRaycaster.cs`: camera raycast interaction, configurable prompt and UnityEvent actions; supports keyboard E and a mobile UI button.
 - `Mobile/CarameloLookInput.cs`: drag-to-look input for the right side of the touch screen.
 
 ## Important integration notes
-The city generator deliberately uses Unity primitives as greybox geometry. It is a functional layout prototype, not finished high-detail art. Replace these objects with original optimized meshes, texture atlases and prefabs. Add colliders to generated structures if the player should collide with them; the generator's primitive colliders are included by default. The vehicle controller is arcade prototype physics, not a production WheelCollider suspension/handling system.
+The city generator deliberately uses Unity primitives as greybox geometry. It is a functional layout prototype, not finished high-detail art. Replace these objects with original optimized meshes, texture atlases and prefabs. Add colliders to generated structures if the player should collide with them; the generator's primitive colliders are included by default. The vehicle controller is arcade prototype physics, not a production WheelCollider suspension/handling system. Mobile vehicle controls require the adapter and five configured UI buttons. Interactions require colliders, a configured raycaster and UnityEvents; they do not automatically implement vehicle entry, shops or missions.
