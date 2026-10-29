@@ -18,6 +18,8 @@
 - [x] Serviços públicos de cenário: policiais com uniforme tático inspirado em patrulhamento especial, bombeiros, profissionais de saúde, viaturas, SUVs e vans blindadas, caminhões de bombeiros e ambulância SAMU estilizada.
 - [x] Detalhes adicionais na favela: caixas d'água elevadas e vergalhões aparentes nas lajes.
 - [x] Personagem procedural com braços e pernas separados, animação simples de caminhada/corrida e pose de mira.
+- [x] HUD inicial com vida, dinheiro, nível de procurado, mira central e informação de munição.
+- [x] Primeira camada de combate: munição no carregador, reserva, cadência por classe de arma e recarga temporizada (R no PC ou botão no Android).
 - [ ] Salvamento de progresso.
 - [ ] Exportação e testes do APK Android.
 
@@ -54,7 +56,7 @@ Caramelo-rp/
 | Liberar/capturar mouse | Esc / clique |
 | Selecionar pistola, revólver, rifle de precisão, submetralhadora, fuzil, metralhadora ou espingarda | 4, 5, 6, 7, 8, 9, 0 |
 | Selecionar machado, faca ou algemas | Z, X, C |
-| Disparar | Botão esquerdo do mouse / ação configurada |
+| Disparar | Botão esquerdo do mouse / botão ATIRAR |\n| Recarregar | R / botão RECARREGAR |
 | Faca / algemas (ações existentes) | F / G, conforme configuração de entrada |
 
 ## Exportar para Android
