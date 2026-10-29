@@ -32,13 +32,42 @@ jobs:
           unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
           cp /tmp/godot-templates/templates/* "$HOME/.local/share/godot/export_templates/4.3.stable/"
 
-      - name: Import and validate project
+      - name: Configure Android export environment
+        run: |
+          set -eu
+          ANDROID_SDK_PATH="${ANDROID_HOME:-/usr/lib/android-sdk}"
+          test -d "$ANDROID_SDK_PATH"
+          mkdir -p "$HOME/.config/godot" "$HOME/.android"
+          keytool -genkeypair -noprompt -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias androiddebugkey -keypass android -keystore "$HOME/.android/debug.keystore" \
+            -storepass android -dname "CN=Android Debug,O=Android,C=US"
+          cat > "$HOME/.config/godot/editor_settings-4.tres" <<EOF
+          [gd_resource type="EditorSettings" format=3]
+
+          [resource]
+          export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"
+          export/android/android_sdk_path = "$ANDROID_SDK_PATH"
+          export/android/debug_keystore = "$HOME/.android/debug.keystore"
+          export/android/debug_keystore_user = "androiddebugkey"
+          export/android/debug_keystore_pass = "android"
+          EOF
+          echo "Android SDK: $ANDROID_SDK_PATH"
+          test -x /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+
+      - name: Import project resources
         run: godot --headless --editor --path . --quit
+
+      - name: Run headless gameplay smoke test
+        run: godot --headless --path . --quit-after 120
 
       - name: Export Android APK
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: /github/home/.android/debug.keystore
+          GODOT_ANDROID_KEYSTORE_DEBUG_USER: androiddebugkey
+          GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: android
         run: |
+          mkdir -p build
           godot --headless --path . --export-debug "Android" build/CarameloRP.apk
 
       - name: Upload APK
