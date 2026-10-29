@@ -198,6 +198,14 @@ func _add_room_box(parent: Node3D, size: Vector3, pos: Vector3, tint: Color) -> 
     material.albedo_color = tint
     item.material_override = material
     parent.add_child(item)
+    var body := StaticBody3D.new()
+    var collision := CollisionShape3D.new()
+    var shape := BoxShape3D.new()
+    shape.size = size
+    collision.shape = shape
+    body.position = pos
+    body.add_child(collision)
+    parent.add_child(body)
 
 func _leave_property(player: Node3D) -> void:
     inside_property = false
