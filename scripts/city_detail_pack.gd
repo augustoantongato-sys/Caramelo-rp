@@ -118,7 +118,6 @@ func _pedestrians() -> void:
     for i in range(12):
         var p := Node3D.new()
         p.position = Vector3(rng.randf_range(-13,13),0.1,rng.randf_range(-18,28))
-        add_child(p)
         var shirts := [Color(0.1,0.25,0.7),Color(0.7,0.12,0.08),Color(0.18,0.42,0.22),Color(0.75,0.62,0.34)]
         box(p,Vector3(0.52,0.78,0.28),Vector3(0,1.05,0),shirts[i%4])
         cyl(p,0.19,0.36,Vector3(0,1.63,0),Color(0.55,0.35,0.24))
@@ -128,6 +127,7 @@ func _pedestrians() -> void:
             var leg := box(p,Vector3(0.18,0.72,0.2),Vector3(side*0.13,0.32,0),Color(0.12,0.13,0.16))
             leg.name = "LimbLeg" + str(int(side))
         p.set_script(preload("res://scripts/pedestrian_ai.gd"))
+        add_child(p)
 
 func _clown_outfit_npc(pos: Vector3, main_color: Color, accent: Color, feminine: bool) -> void:
     var p := Node3D.new()
