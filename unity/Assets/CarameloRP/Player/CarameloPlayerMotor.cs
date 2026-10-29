@@ -40,7 +40,7 @@ namespace CarameloRP
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, target, rotationSpeed * Time.deltaTime);
             }
 
-            float speed = CarameloMobileInput.SprintHeld ? sprintSpeed : walkSpeed;
+            float speed = (CarameloMobileInput.SprintHeld || KeyboardSprint) ? sprintSpeed : walkSpeed;
             Vector3 velocity = direction * speed + Vector3.up * verticalVelocity;
             controller.Move(velocity * Time.deltaTime);
         }
@@ -49,9 +49,9 @@ namespace CarameloRP
         private static void CarameloMobileInputInputSprint(bool held)
         {
             // Keyboard sprint fallback; mobile sprint is wired through the HUD.
-            _keyboardSprint = held;
+            KeyboardSprint = held;
         }
-        private static bool _keyboardSprint;
+        public static bool KeyboardSprint { get; private set; }
 #endif
     }
 }
