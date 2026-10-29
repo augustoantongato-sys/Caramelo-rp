@@ -76,10 +76,10 @@ func _make_city() -> void:
 
 func _make_city_landmarks() -> void:
     # Equipamentos públicos e comércio para dar identidade ao primeiro bairro.
-    _landmark(Vector3(33, 0, 30), "HOSPITAL", Color(0.78, 0.82, 0.81), Color(0.12, 0.55, 0.42))
-    _landmark(Vector3(33, 0, -25), "DELEGACIA", Color(0.65, 0.72, 0.78), Color(0.12, 0.28, 0.52))
-    _landmark(Vector3(-33, 0, 31), "OFICINA", Color(0.66, 0.58, 0.46), Color(0.9, 0.42, 0.08))
-    _landmark(Vector3(-33, 0, -25), "MERCADO", Color(0.78, 0.72, 0.58), Color(0.12, 0.48, 0.22))
+    _landmark(Vector3(35, 0, 10), "HOSPITAL", Color(0.78, 0.82, 0.81), Color(0.12, 0.55, 0.42))
+    _landmark(Vector3(35, 0, -12), "DELEGACIA", Color(0.65, 0.72, 0.78), Color(0.12, 0.28, 0.52))
+    _landmark(Vector3(-35, 0, 10), "OFICINA", Color(0.66, 0.58, 0.46), Color(0.9, 0.42, 0.08))
+    _landmark(Vector3(-35, 0, -12), "MERCADO", Color(0.78, 0.72, 0.58), Color(0.12, 0.48, 0.22))
 
 func _landmark(center: Vector3, title: String, wall_color: Color, accent: Color) -> void:
     # Prédio térreo com fachada, porta, vitrines e placa legível à distância.
