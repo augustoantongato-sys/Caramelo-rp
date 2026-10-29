@@ -1,6 +1,7 @@
 extends Node3D
 
 var mission_manager := MissionManager.new()
+var territory_manager := TerritoryManager.new()
 var hud: CanvasLayer
 var message_label: Label
 var mission_label: Label
@@ -15,12 +16,14 @@ var inside_property := false
 
 func _ready() -> void:
     add_child(mission_manager)
+    add_child(territory_manager)
     mission_manager.mission_updated.connect(_on_mission_updated)
     GameState.stats_changed.connect(_refresh_hud)
     GameState.message_changed.connect(_show_message)
     _create_hud()
     _spawn_npcs()
     _create_mission_contact()
+    _create_management_signs()
     _create_properties()
     _refresh_hud()
 
@@ -40,6 +43,8 @@ func _process(_delta: float) -> void:
         interaction_hint.text = "[E] Comprar apartamento (R$ 8.000)" if not apartment_owned else "[E] Entrar no apartamento"
     else:
         interaction_hint.text = "[E] Falar com o contato / missão"
+    if Input.is_key_pressed(KEY_1) and Input.is_action_just_pressed("interact"):
+        territory_manager.recruit("seguranca")
     if Input.is_action_just_pressed("interact"):
         if inside_property:
             _leave_property(player)
@@ -89,7 +94,7 @@ func _refresh_hud() -> void:
     if not is_instance_valid(stats_label):
         return
     var stars := "★".repeat(GameState.wanted_level)
-    stats_label.text = "R$ " + str(GameState.money) + "   VIDA: " + str(roundi(GameState.health)) + "%   PROCURADO: " + stars
+    stats_label.text = "R$ " + str(GameState.money) + "   VIDA: " + str(roundi(GameState.health)) + "%   RESPEITO: " + str(GameState.reputation) + "   PROCURADO: " + stars
 
 func _show_message(value: String) -> void:
     message_label.text = value
@@ -211,3 +216,18 @@ func _leave_property(player: Node3D) -> void:
     inside_property = false
     player.global_position = starter_home_door + Vector3(0, 1.2, 4)
     GameState.show_message("Você saiu da propriedade.")
+
+func _create_management_signs() -> void:
+    _create_sign(Vector3(-4, 1.0, -12), "BASE DA EQUIPE")
+    _create_sign(Vector3(14, 1.0, -12), "PONTO DE CONQUISTA")
+
+func _create_sign(pos: Vector3, _caption: String) -> void:
+    var marker := MeshInstance3D.new()
+    var mesh := BoxMesh.new()
+    mesh.size = Vector3(1.2, 2.0, 0.2)
+    marker.mesh = mesh
+    marker.position = pos
+    var mat := StandardMaterial3D.new()
+    mat.albedo_color = Color(0.85, 0.55, 0.12)
+    marker.material_override = mat
+    add_child(marker)
