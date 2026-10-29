@@ -79,6 +79,8 @@ func _unhandled_input(event: InputEvent) -> void:
             KEY_X: _select_weapon(8)
             KEY_C: _select_weapon(9)
             KEY_R: _reload_weapon()
+            KEY_F5: _request_save()
+            KEY_F9: _request_load()
     if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
         _rotate_camera(event.relative)
     if event is InputEventScreenDrag:
@@ -217,3 +219,13 @@ func _reload_weapon() -> void:
     is_reloading = false
     _update_ammo_hud()
     GameState.show_message("Arma recarregada.")
+
+func _request_save() -> void:
+    var manager := get_tree().get_first_node_in_group("game_manager")
+    if is_instance_valid(manager):
+        manager.call("save_progress")
+
+func _request_load() -> void:
+    var manager := get_tree().get_first_node_in_group("game_manager")
+    if is_instance_valid(manager):
+        manager.call("load_progress")
