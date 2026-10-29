@@ -25,6 +25,7 @@ func _ready() -> void:
     character_visuals.name = "CharacterVisuals"
     add_child(character_visuals)
     _create_weapon_visuals()
+    character_visuals.call("set_weapon_visible", true)
 
 func _create_weapon_visuals() -> void:
     var visuals_script = preload("res://scripts/weapon_visuals.gd")
