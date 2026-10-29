@@ -11,12 +11,47 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $CameraPivot/SpringArm3D/Camera3D
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var shot_cooldown := 0.0
+var weapon_visuals: Node3D
+var selected_weapon := 0
 
 func _ready() -> void:
     add_to_group("player")
     Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+    _create_weapon_visuals()
+
+func _create_weapon_visuals() -> void:
+    var visuals_script = preload("res://scripts/weapon_visuals.gd")
+    weapon_visuals = visuals_script.new()
+    weapon_visuals.name = "WeaponVisuals"
+    add_child(weapon_visuals)
+    # Posicionamento aproximado da mão direita; ainda não há esqueleto/animação de braços.
+    weapon_visuals.position = Vector3(0.38, 1.08, -0.32)
+    weapon_visuals.rotation.y = PI / 2.0
+    weapon_visuals.scale = Vector3(0.62, 0.62, 0.62)
+
+func _select_weapon(index: int) -> void:
+    selected_weapon = clampi(index, 0, 9)
+    if is_instance_valid(weapon_visuals):
+        weapon_visuals.call("set_weapon", selected_weapon)
+    var weapon_names := [
+        "Pistola", "Revólver", "Rifle de precisão", "Submetralhadora",
+        "Fuzil", "Metralhadora", "Espingarda", "Machado", "Faca", "Algemas"
+    ]
+    GameState.show_message("Equipado: " + weapon_names[selected_weapon])
 
 func _unhandled_input(event: InputEvent) -> void:
+    if event is InputEventKey and event.pressed and not event.echo:
+        match event.keycode:
+            KEY_4: _select_weapon(0)
+            KEY_5: _select_weapon(1)
+            KEY_6: _select_weapon(2)
+            KEY_7: _select_weapon(3)
+            KEY_8: _select_weapon(4)
+            KEY_9: _select_weapon(5)
+            KEY_0: _select_weapon(6)
+            KEY_Z: _select_weapon(7)
+            KEY_X: _select_weapon(8)
+            KEY_C: _select_weapon(9)
     if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
         rotate_y(-event.relative.x * mouse_sensitivity)
         camera_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
