@@ -46,7 +46,6 @@ namespace CarameloRP
         private void Ground()
         {
             Box("Ground", new Vector3(0,-1,0), new Vector3(120,2,120), C(.25f,.34f,.24f), grass);
-            // Sidewalks and road shoulders give the district a more believable street profile.
             Box("Main road", new Vector3(0,.05f,-48), new Vector3(120,.2f,12), C(.12f,.13f,.14f), asphalt);
             Box("Road shoulder north",new Vector3(0,.08f,-55),new Vector3(120,.16f,1.5f),C(.42f,.41f,.37f),concrete);
             Box("Road shoulder south",new Vector3(0,.08f,-41),new Vector3(120,.16f,1.5f),C(.42f,.41f,.37f),concrete);
@@ -88,14 +87,30 @@ namespace CarameloRP
             }
             for(int i=0;i<24;i++) Box("Stair step",new Vector3(34,i*.43f,-30+i*2.2f),new Vector3(3.2f,.25f,2.2f),C(.59f,.57f,.52f),concrete);
             for(int i=0;i<7;i++) Box("Alley",new Vector3(-48+i*15,.1f,12),new Vector3(2,.2f,48),C(.42f,.4f,.36f),concrete);
-            // Utility poles, overhead cable runs and retaining-wall details add a dense hillside silhouette.
             for(int i=0;i<9;i++)
             {
                 float x=-48+i*12;
                 Cylinder("Favela utility pole",new Vector3(x,5,3),new Vector3(.16f,5,.16f),C(.2f,.19f,.17f));
                 Box("Utility crossbar",new Vector3(x,9.7f,3),new Vector3(1.5f,.12f,.16f),C(.18f,.17f,.15f),null);
             }
-            Box("Community court",new Vector3(-30,.18f,-30),new Vector3(25,.3f,18),C(.16f,.38f,.2f),grass);
+
+            // Campo comunitário de futebol na favela, com grama, marcações, gols, alambrado e arquibancada.
+            Vector3 field = new Vector3(-30,.22f,-30);
+            Box("Favela football pitch",field,new Vector3(42,.28f,25),C(.12f,.39f,.17f),grass);
+            Box("Pitch center line",field+new Vector3(0,.16f,0),new Vector3(.16f,.025f,23),Color.white,null);
+            Box("Pitch center circle",field+new Vector3(0,.18f,0),new Vector3(7,.025f,.16f),Color.white,null);
+            Box("Pitch left touchline",field+new Vector3(-20,.18f,0),new Vector3(.14f,.025f,24),Color.white,null);
+            Box("Pitch right touchline",field+new Vector3(20,.18f,0),new Vector3(.14f,.025f,24),Color.white,null);
+            Box("Pitch far touchline",field+new Vector3(0,.18f,12),new Vector3(40,.025f,.14f),Color.white,null);
+            Box("Pitch near touchline",field+new Vector3(0,.18f,-12),new Vector3(40,.025f,.14f),Color.white,null);
+            Box("Favela goal left",field+new Vector3(-20,1.25f,0),new Vector3(.25f,2.5f,5),Color.white,null);
+            Box("Favela goal right",field+new Vector3(20,1.25f,0),new Vector3(.25f,2.5f,5),Color.white,null);
+            for(int side=-1;side<=1;side+=2)
+                for(int i=0;i<13;i++)
+                    Box("Pitch fence",field+new Vector3(-20+i*3.3f,1.8f,side*13.2f),new Vector3(.08f,3.6f,.08f),C(.22f,.25f,.23f),null);
+            Box("Community stand",field+new Vector3(0,1.1f,-17),new Vector3(18,2.2f,3),C(.48f,.46f,.42f),concrete);
+            for(int i=0;i<4;i++) Box("Stand step",field+new Vector3(0,.45f+i*.38f,-18+i*.65f),new Vector3(16,.18f,1.2f),C(.62f,.6f,.55f),concrete);
+            Box("Community court",new Vector3(-30,.18f,-5),new Vector3(25,.3f,18),C(.16f,.38f,.2f),grass);
             for(int i=0;i<5;i++) Tree(new Vector3(48+i*3,0,35+i*5));
         }
 
@@ -151,7 +166,6 @@ namespace CarameloRP
             Box("Basketball court",new Vector3(-25,.2f,-25),new Vector3(35,.3f,20),C(.65f,.32f,.2f),null);
             Box("Park lawn",new Vector3(28,.08f,-25),new Vector3(35,.16f,20),C(.28f,.44f,.25f),grass);
             for(int i=0;i<5;i++) Tree(new Vector3(12+i*8,0,-35));
-            // Small apartment blocks on the district edge create a transition toward the city center.
             for(int i=0;i<3;i++)
             {
                 float x=-45+i*20;
