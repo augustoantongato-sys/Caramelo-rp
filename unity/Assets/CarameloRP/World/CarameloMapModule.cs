@@ -87,6 +87,14 @@ namespace CarameloRP
             }
             for(int i=0;i<24;i++) Box("Stair step",new Vector3(34,i*.43f,-30+i*2.2f),new Vector3(3.2f,.25f,2.2f),C(.59f,.57f,.52f),concrete);
             for(int i=0;i<7;i++) Box("Alley",new Vector3(-48+i*15,.1f,12),new Vector3(2,.2f,48),C(.42f,.4f,.36f),concrete);
+            // Grafites e pichações com frases em letras minúsculas, como nos muros de bairros brasileiros.
+            Graffiti("vida loka",new Vector3(-49,2.2f,-31),new Vector3(0,0,0),C(.9f,.22f,.12f),2.2f);
+            Graffiti("caramelo",new Vector3(-39,2.4f,-31),new Vector3(0,0,0),C(.18f,.55f,.88f),2.0f);
+            Graffiti("fé",new Vector3(-26,2.1f,-31),new Vector3(0,0,0),C(.95f,.78f,.18f),2.4f);
+            Graffiti("respeita a quebrada",new Vector3(-13,2.1f,-31),new Vector3(0,0,0),C(.18f,.72f,.48f),1.25f);
+            Graffiti("paz",new Vector3(8,2.3f,-31),new Vector3(0,0,0),C(.78f,.35f,.78f),2.2f);
+            Graffiti("sem preconceito",new Vector3(23,2.1f,-31),new Vector3(0,0,0),C(.95f,.48f,.12f),1.3f);
+
             for(int i=0;i<9;i++)
             {
                 float x=-48+i*12;
@@ -207,6 +215,23 @@ namespace CarameloRP
             Box("Church garden path",new Vector3(37,.18f,-18),new Vector3(5,.2f,10),C(.72f,.68f,.58f),concrete);
             for(int i=0;i<6;i++) Tree(new Vector3(-38+i*15,0,-5));
             Box("Viewpoint",new Vector3(0,.4f,48),new Vector3(42,.8f,12),C(.45f,.43f,.39f),concrete);
+        }
+
+        private void Graffiti(string words,Vector3 position,Vector3 rotation,Color color,float size)
+        {
+            GameObject sign=new GameObject("graffiti - "+words);
+            sign.transform.SetParent(generated,false);
+            sign.transform.localPosition=position;
+            sign.transform.localEulerAngles=rotation;
+            TextMesh text=sign.AddComponent<TextMesh>();
+            text.text=words.ToLowerInvariant();
+            text.anchor=TextAnchor.MiddleCenter;
+            text.alignment=TextAlignment.Center;
+            text.fontSize=100;
+            text.characterSize=size/100f;
+            text.color=color;
+            text.fontStyle=FontStyle.Bold;
+            text.richText=false;
         }
 
         private void Tree(Vector3 p)
