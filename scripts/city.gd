@@ -3,6 +3,9 @@ extends Node3D
 func _ready() -> void:
     _make_environment()
     _make_city()
+    var detail_pack := preload("res://scripts/city_detail_pack.gd").new()
+    detail_pack.name = "CityDetailPack"
+    add_child(detail_pack)
 
 func _material(color: Color) -> StandardMaterial3D:
     var mat := StandardMaterial3D.new()
