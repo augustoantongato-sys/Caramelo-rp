@@ -86,8 +86,6 @@ func _physics_process(delta: float) -> void:
     if is_instance_valid(current_vehicle):
         global_position = current_vehicle.global_position + Vector3.UP * 1.35
         velocity = Vector3.ZERO
-        if Input.is_action_just_pressed("interact"):
-            current_vehicle.call("_leave_vehicle")
         return
     shot_cooldown = maxf(0.0, shot_cooldown - delta)
     if not is_on_floor():
