@@ -185,6 +185,26 @@ namespace CarameloRP
             Box("Monument torso",new Vector3(0,8,25),new Vector3(2.5f,9,2),C(.78f,.77f,.72f),null);
             Sphere("Monument head",new Vector3(0,13.2f,25),new Vector3(2,2,2),C(.78f,.77f,.72f));
             Box("Monument arms",new Vector3(0,10.5f,25),new Vector3(15,1.4f,1.6f),C(.78f,.77f,.72f),null);
+            // Igreja central de arquitetura acolhedora, com torre, vitrais, cruz e jardim.
+            Box("Church courtyard",new Vector3(37,.12f,0),new Vector3(38,.24f,34),C(.34f,.46f,.31f),grass);
+            Box("Church main nave",new Vector3(37,5,2),new Vector3(24,10,22),C(.88f,.83f,.7f),null);
+            Box("Church front facade",new Vector3(37,5,-9.2f),new Vector3(24,10,.5f),C(.92f,.88f,.77f),null);
+            Box("Church roof",new Vector3(37,10.4f,2),new Vector3(25,.7f,23),C(.55f,.19f,.16f),null);
+            Box("Church entrance",new Vector3(37,2.4f,-9.55f),new Vector3(4.2f,4.8f,.35f),C(.28f,.16f,.1f),null);
+            Box("Church entrance arch",new Vector3(37,5.2f,-9.8f),new Vector3(6,.35f,.5f),C(.94f,.88f,.72f),null);
+            for(int side=-1;side<=1;side+=2)
+            {
+                Box("Church stained glass",new Vector3(37+side*7,6,-9.55f),new Vector3(2.4f,3.6f,.12f),C(.18f,.48f,.68f),null);
+                Box("Church window crossbar",new Vector3(37+side*7,6,-9.65f),new Vector3(.12f,3.8f,.08f),C(.9f,.83f,.68f),null);
+            }
+            Box("Church bell tower",new Vector3(48,13,-7),new Vector3(6,16,6),C(.88f,.83f,.7f),null);
+            Cylinder("Church tower roof",new Vector3(48,22,-7),new Vector3(4.5f,3,4.5f),C(.55f,.19f,.16f));
+            Box("Church cross vertical",new Vector3(48,25.5f,-7),new Vector3(.35f,3,.35f),C(.78f,.68f,.42f),null);
+            Box("Church cross horizontal",new Vector3(48,26,-7),new Vector3(2,.35f,.35f),C(.78f,.68f,.42f),null);
+            for(int step=0;step<4;step++)
+                Box("Church front steps",new Vector3(37,.25f+step*.22f,-11-step*.8f),new Vector3(12,.3f,1.5f),C(.7f,.67f,.59f),concrete);
+            for(int i=0;i<5;i++) Tree(new Vector3(23+i*7,0,-17));
+            Box("Church garden path",new Vector3(37,.18f,-18),new Vector3(5,.2f,10),C(.72f,.68f,.58f),concrete);
             for(int i=0;i<6;i++) Tree(new Vector3(-38+i*15,0,-5));
             Box("Viewpoint",new Vector3(0,.4f,48),new Vector3(42,.8f,12),C(.45f,.43f,.39f),concrete);
         }
