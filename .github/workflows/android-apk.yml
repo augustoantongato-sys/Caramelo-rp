@@ -85,10 +85,11 @@ jobs:
 
       - name: Diagnose and export Android APK
         run: |
-          set -o pipefail
           mkdir -p build
-          godot --headless --path . --verbose --export-debug "Android" build/CarameloRP.apk 2>&1 | tee /tmp/android-export.log
-          if [ ! -s build/CarameloRP.apk ]; then
+          export_status=0
+          godot --headless --path . --verbose --export-debug "Android" build/CarameloRP.apk > /tmp/android-export.log 2>&1 || export_status=$?
+          cat /tmp/android-export.log
+          if [ "$export_status" -ne 0 ] || [ ! -s build/CarameloRP.apk ]; then
             echo "=== Relevant diagnostics ==="
             grep -Ei "error|warning|android|sdk|keystore|template|gradle|build.tools|export" /tmp/android-export.log | tail -n 250 || true
             exit 1
