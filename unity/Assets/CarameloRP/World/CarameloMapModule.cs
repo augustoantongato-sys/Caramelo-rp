@@ -96,13 +96,13 @@ namespace CarameloRP
 
             // Campo comunitário de futebol na favela, com grama, marcações, gols, alambrado e arquibancada.
             Vector3 field = new Vector3(-30,.22f,-30);
-            Box("Favela football pitch",field,new Vector3(42,.28f,25),C(.12f,.39f,.17f),grass);
-            Box("Pitch center line",field+new Vector3(0,.16f,0),new Vector3(.16f,.025f,23),Color.white,null);
-            Box("Pitch center circle",field+new Vector3(0,.18f,0),new Vector3(7,.025f,.16f),Color.white,null);
-            Box("Pitch left touchline",field+new Vector3(-20,.18f,0),new Vector3(.14f,.025f,24),Color.white,null);
-            Box("Pitch right touchline",field+new Vector3(20,.18f,0),new Vector3(.14f,.025f,24),Color.white,null);
-            Box("Pitch far touchline",field+new Vector3(0,.18f,12),new Vector3(40,.025f,.14f),Color.white,null);
-            Box("Pitch near touchline",field+new Vector3(0,.18f,-12),new Vector3(40,.025f,.14f),Color.white,null);
+            Box("Favela concrete futsal court",field,new Vector3(42,.28f,25),C(.43f,.44f,.42f),concrete);
+            Box("Pitch center line",field+new Vector3(0,.16f,0),new Vector3(.16f,.025f,23),C(.94f,.94f,.9f),null);
+            Box("Pitch center circle",field+new Vector3(0,.18f,0),new Vector3(7,.025f,.16f),C(.94f,.94f,.9f),null);
+            Box("Pitch left touchline",field+new Vector3(-20,.18f,0),new Vector3(.14f,.025f,24),C(.94f,.94f,.9f),null);
+            Box("Pitch right touchline",field+new Vector3(20,.18f,0),new Vector3(.14f,.025f,24),C(.94f,.94f,.9f),null);
+            Box("Pitch far touchline",field+new Vector3(0,.18f,12),new Vector3(40,.025f,.14f),C(.94f,.94f,.9f),null);
+            Box("Pitch near touchline",field+new Vector3(0,.18f,-12),new Vector3(40,.025f,.14f),C(.94f,.94f,.9f),null);
             Box("Favela goal left",field+new Vector3(-20,1.25f,0),new Vector3(.25f,2.5f,5),Color.white,null);
             Box("Favela goal right",field+new Vector3(20,1.25f,0),new Vector3(.25f,2.5f,5),Color.white,null);
             for(int side=-1;side<=1;side+=2)
