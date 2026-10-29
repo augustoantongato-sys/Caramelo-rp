@@ -12,25 +12,38 @@ window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 
-[rendering]
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
-textures/default_filters/use_nearest_mipmap_filter=false
+[autoload]
+GameState="*res://scripts/game_state.gd"
 
-[autoload]\nGameState="*res://scripts/game_state.gd"\n\n[input]
-move_forward={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":87),Object(InputEventKey,"physical_keycode":4194320)]}
-move_back={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":83),Object(InputEventKey,"physical_keycode":4194322)]}
-move_left={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":65),Object(InputEventKey,"physical_keycode":4194319)]}
-move_right={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":68),Object(InputEventKey,"physical_keycode":4194321)]}
+[input]
+move_forward={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":87), Object(InputEventKey,"physical_keycode":4194320)]
+}
+move_back={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":83), Object(InputEventKey,"physical_keycode":4194322)]
+}
+move_left={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":65), Object(InputEventKey,"physical_keycode":4194319)]
+}
+move_right={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":68), Object(InputEventKey,"physical_keycode":4194321)]
+}
 jump={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":32)]}
-sprint={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":_SHIFT)]}
-
+sprint={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":4194325)]}
 interact={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":69)]}
 shoot={"deadzone":0.2,"events":[Object(InputEventMouseButton,"button_index":1)]}
 melee={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":70)]}
 arrest={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":71)]}
-
 hire_security={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":49)]}
 hire_vendor={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":50)]}
 hire_scout={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":51)]}
 conquer_area={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":84)]}
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
