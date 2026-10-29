@@ -62,5 +62,5 @@ func _leave_vehicle() -> void:
     who.set("current_vehicle", null)
     who.visible = true
     who.global_position = global_position + global_transform.basis.x * 2.2 + Vector3.UP * 0.3
-    who.velocity = Vector3.ZERO
+    who.set("velocity", Vector3.ZERO)
     GameState.show_message("Você saiu do veículo.")
