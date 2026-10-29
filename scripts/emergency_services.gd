@@ -118,11 +118,11 @@ func _place_vehicle(pos: Vector3, kind: String) -> void:
     var p := CharacterBody3D.new()
     p.set_script(preload("res://scripts/drivable_vehicle.gd"))
     p.position = pos
-    p.vehicle_label = {
+    p.set("vehicle_label", {
         "police":"Viatura policial", "armored_suv":"SUV blindada",
         "armored_van":"Van blindada", "fire":"Caminhão de bombeiros",
         "fire_compact":"Caminhão de bombeiros compacto", "ambulance":"Ambulância SAMU"
-    }.get(kind,"Veículo")
+    }.get(kind,"Veículo"))
     add_child(p)
     match kind:
         "police": _sedan(p,true)
