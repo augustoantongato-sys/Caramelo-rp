@@ -32,9 +32,18 @@ func _process(_delta: float) -> void:
     if not is_instance_valid(player):
         return
     var near_contact := player.global_position.distance_to(Vector3(5, 0, -8)) < 3.5
+    var near_management := player.global_position.distance_to(Vector3(-4, 0, -12)) < 4.0
+    if near_management and Input.is_action_just_pressed("hire_security"):
+        territory_manager.recruit("seguranca")
+    if near_management and Input.is_action_just_pressed("hire_vendor"):
+        territory_manager.recruit("vendedores")
+    if near_management and Input.is_action_just_pressed("hire_scout"):
+        territory_manager.recruit("olheiros")
+    if Input.is_action_just_pressed("conquer_area"):
+        territory_manager.conquer("Morro do Caramelo")
     var near_starter := player.global_position.distance_to(starter_home_door) < 3.0
     var near_apartment := player.global_position.distance_to(apartment_door) < 3.0
-    interaction_hint.visible = near_contact or near_starter or near_apartment or inside_property
+    interaction_hint.visible = near_contact or near_starter or near_apartment or inside_property or near_management
     if inside_property:
         interaction_hint.text = "[E] Sair da casa"
     elif near_starter:
@@ -43,8 +52,6 @@ func _process(_delta: float) -> void:
         interaction_hint.text = "[E] Comprar apartamento (R$ 8.000)" if not apartment_owned else "[E] Entrar no apartamento"
     else:
         interaction_hint.text = "[E] Falar com o contato / missão"
-    if Input.is_key_pressed(KEY_1) and Input.is_action_just_pressed("interact"):
-        territory_manager.recruit("seguranca")
     if Input.is_action_just_pressed("interact"):
         if inside_property:
             _leave_property(player)
