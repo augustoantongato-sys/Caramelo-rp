@@ -9,8 +9,8 @@ var mission_label: Label
 var stats_label: Label
 var interaction_hint: Label
 var mission_marker: Node3D
-var starter_home_door := Vector3(-35, 0, 30)
-var apartment_door := Vector3(34, 0, 30)
+var starter_home_door := Vector3(-43, 0, 30)
+var apartment_door := Vector3(43, 0, 30)
 var starter_home_owned := true
 var apartment_owned := false
 var inside_property := false
