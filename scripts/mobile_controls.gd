@@ -14,6 +14,8 @@ func _ready() -> void:
     _add_hold_button("AÇÃO", "melee", Vector2(-95, -55), Vector2(100, 58))
     _add_hold_button("ALGEMAR", "arrest", Vector2(-205, -55), Vector2(100, 58))
     _add_hold_button("ENTRAR / SAIR", "interact", Vector2(-205, -275), Vector2(150, 58))
+    _add_menu_button("SALVAR", Vector2(18, 145), _save_game)
+    _add_menu_button("CARREGAR", Vector2(18, 198), _load_game)
 
 func _add_hold_button(label_text: String, action: String, offset: Vector2, size: Vector2) -> void:
     var button := Button.new()
@@ -36,3 +38,23 @@ func _press_action(action: String) -> void:
 
 func _release_action(action: String) -> void:
     Input.action_release(action)
+
+func _add_menu_button(caption: String, pos: Vector2, callback: Callable) -> void:
+    var button := Button.new()
+    button.text = caption
+    button.position = pos
+    button.size = Vector2(112, 44)
+    button.modulate = Color(0.8, 0.9, 1.0, 0.88)
+    button.add_theme_font_size_override("font_size", 15)
+    add_child(button)
+    button.pressed.connect(callback)
+
+func _save_game() -> void:
+    var manager := get_tree().get_first_node_in_group("game_manager")
+    if is_instance_valid(manager):
+        manager.call("save_progress")
+
+func _load_game() -> void:
+    var manager := get_tree().get_first_node_in_group("game_manager")
+    if is_instance_valid(manager):
+        manager.call("load_progress")
