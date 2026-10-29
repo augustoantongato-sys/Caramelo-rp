@@ -37,8 +37,10 @@ func _cyl(p: Node3D, radius: float, height: float, pos: Vector3, color: Color) -
 
 func _wheel(p: Node3D, x: float, z: float, radius := 0.42) -> void:
     var w := _cyl(p, radius, 0.22, Vector3(x, radius, z), Color(0.025,0.027,0.03))
+    w.name = "VehicleWheel"
     w.rotation.z = PI / 2.0
     var hub := _cyl(p, radius * 0.48, 0.235, Vector3(x, radius, z), Color(0.48,0.5,0.52))
+    hub.name = "WheelHub"
     hub.rotation.z = PI / 2.0
 
 func _lightbar(p: Node3D, y: float, z: float, blue := true) -> void:
@@ -113,8 +115,14 @@ func _ambulance(p: Node3D) -> void:
             _wheel(p,x,z,0.4)
 
 func _place_vehicle(pos: Vector3, kind: String) -> void:
-    var p := Node3D.new()
+    var p := CharacterBody3D.new()
+    p.set_script(preload("res://scripts/drivable_vehicle.gd"))
     p.position = pos
+    p.vehicle_label = {
+        "police":"Viatura policial", "armored_suv":"SUV blindada",
+        "armored_van":"Van blindada", "fire":"Caminhão de bombeiros",
+        "fire_compact":"Caminhão de bombeiros compacto", "ambulance":"Ambulância SAMU"
+    }.get(kind,"Veículo")
     add_child(p)
     match kind:
         "police": _sedan(p,true)
@@ -145,8 +153,12 @@ func _person(pos: Vector3, role: String) -> void:
     _box(p,Vector3(0.62,0.86,0.32),Vector3(0,1.15,0),uniform)
     _cyl(p,0.19,0.36,Vector3(0,1.8,0),skin)
     for side in [-1.0,1.0]:
-        _box(p,Vector3(0.2,0.78,0.22),Vector3(side*0.39,1.12,0),uniform)
-        _box(p,Vector3(0.23,0.78,0.25),Vector3(side*0.18,0.42,0),Color(0.045,0.05,0.055))
+        var arm := _box(p,Vector3(0.2,0.78,0.22),Vector3(side*0.39,1.12,0),uniform)
+        arm.name = "LimbArm" + str(int(side))
+        var leg := _box(p,Vector3(0.23,0.78,0.25),Vector3(side*0.18,0.42,0),Color(0.045,0.05,0.055))
+        leg.name = "LimbLeg" + str(int(side))
+    var ai := preload("res://scripts/pedestrian_ai.gd").new()
+    p.add_child(ai)
     if role == "policia":
         _cyl(p,0.22,0.12,Vector3(0,2.02,0),Color(0.025,0.03,0.035))
         _box(p,Vector3(0.22,0.16,0.08),Vector3(0,1.25,-0.19),Color(0.58,0.48,0.18))
