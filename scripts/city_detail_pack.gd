@@ -7,6 +7,9 @@ func _ready() -> void:
     _vehicles()
     _pedestrians()
     _skyline()
+    var services := preload("res://scripts/emergency_services.gd").new()
+    services.name = "EmergencyServices"
+    add_child(services)
 
 func mat(c: Color, r := 0.82) -> StandardMaterial3D:
     var m := StandardMaterial3D.new()
