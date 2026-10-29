@@ -73,12 +73,24 @@ jobs:
       - name: Run headless gameplay smoke test
         run: godot --headless --path . --quit-after 120
 
-      - name: Export Android APK
+      - name: Diagnose and export Android APK
         env:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
         run: |
+          set +e
+          echo "=== SDK tools ==="
+          find "$ANDROID_SDK_PATH" -maxdepth 4 \( -name android.jar -o -name aapt -o -name zipalign -o -name apksigner \) -print
+          echo "=== Export preset ==="
+          cat export_presets.cfg
+          echo "=== Verbose Android export ==="
           mkdir -p build
-          godot --headless --path . --export-debug "Android" build/CarameloRP.apk
+          godot --headless --path . --verbose --export-debug "Android" build/CarameloRP.apk 2>&1 | tee /tmp/android-export.log
+          if [ ! -s build/CarameloRP.apk ]; then
+            echo "=== Relevant diagnostics ==="
+            grep -Ei "error|warning|android|sdk|keystore|template|gradle|build.tools|export" /tmp/android-export.log | tail -n 200 || true
+            exit 1
+          fi
+          file build/CarameloRP.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -87,3 +99,15 @@ jobs:
           path: build/CarameloRP.apk
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish direct APK download
+        if: success() && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-latest
+          name: Caramelo RP — versão Android
+          body: APK de depuração do Caramelo RP.
+          files: build/CarameloRP.apk
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
