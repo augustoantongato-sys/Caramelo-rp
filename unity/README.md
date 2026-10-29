@@ -29,7 +29,10 @@ Original Brazilian city environment: hillside community, narrow streets, stairs,
 - Profile on the target phone; quality presets are starting points, not guarantees.
 
 ## Added prototype systems
-- `World/CarameloBrazilianCity.cs`: runtime blockout with avenue, commercial strip, stepped hillside community, water tanks, school and football pitch. Assign optional materials in Inspector and call Generate.
+- `World/CarameloBrazilianCity.cs`: earlier single-scene runtime blockout.
+- `World/CarameloMapModule.cs`: independent 120m x 120m generators for favela, residential, commercial, recreation and landmark districts.
+- `World/CarameloWorldAssembler.cs`: assembles the five regions into one connected 360m x 240m world layout and creates a suggested player spawn. Add this component to an empty GameObject and press Play.
+- `World/MAP-MODULES.md`: setup instructions and current greybox limitations.
 - `Vehicles/CarameloArcadeVehicle.cs`: simple Rigidbody arcade vehicle controller. Build a vehicle prefab with Rigidbody and colliders.
 - `Vehicles/CarameloVehicleMobileInput.cs`: touch hold-buttons for accelerate, reverse, steering and brake, plus an adapter that forwards input to the arcade vehicle. See `Assets/CarameloRP/README-MOBILE-CONTROLS.md`.
 - `Interaction/CarameloInteractable.cs` and `Interaction/CarameloInteractionRaycaster.cs`: camera raycast interaction, configurable prompt and UnityEvent actions; supports keyboard E and a mobile UI button.
