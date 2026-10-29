@@ -31,6 +31,7 @@ func complete_active_mission() -> void:
     var mission: Dictionary = missions[active_index]
     GameState.add_money(int(mission.reward))
     completed[active_index] = true
+    GameState.reputation += 1
     GameState.show_message("Missão concluída! +R$ " + str(mission.reward))
     active_index = -1
     GameState.current_mission = ""
