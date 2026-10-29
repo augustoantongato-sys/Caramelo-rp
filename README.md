@@ -20,7 +20,7 @@
 - [x] Personagem procedural com braços e pernas separados, animação simples de caminhada/corrida e pose de mira.
 - [x] HUD inicial com vida, dinheiro, nível de procurado, mira central e informação de munição.
 - [x] Primeira camada de combate: munição no carregador, reserva, cadência por classe de arma e recarga temporizada (R no PC ou botão no Android).
-- [ ] Salvamento de progresso.
+- [x] Salvamento e carregamento local de dinheiro, vida, procurado, respeito, inventário, posição, apartamento e progresso das missões.
 - [ ] Exportação e testes do APK Android.
 
 ## Estrutura
@@ -56,7 +56,7 @@ Caramelo-rp/
 | Liberar/capturar mouse | Esc / clique |
 | Selecionar pistola, revólver, rifle de precisão, submetralhadora, fuzil, metralhadora ou espingarda | 4, 5, 6, 7, 8, 9, 0 |
 | Selecionar machado, faca ou algemas | Z, X, C |
-| Disparar | Botão esquerdo do mouse / botão ATIRAR |\n| Recarregar | R / botão RECARREGAR |
+| Disparar | Botão esquerdo do mouse / botão ATIRAR |\n| Recarregar | R / botão RECARREGAR |\n| Salvar progresso | F5 / botão SALVAR |\n| Carregar progresso | F9 / botão CARREGAR |
 | Faca / algemas (ações existentes) | F / G, conforme configuração de entrada |
 
 ## Exportar para Android
@@ -67,7 +67,7 @@ Caramelo-rp/
 4. Configure identificador do pacote, orientação e ícone.
 5. Exporte primeiro um APK de depuração e teste em um aparelho real.
 
-Os veículos de emergência agora usam controlador de direção próprio: aproxime-se e pressione E (ou o botão Entrar/Sair no celular), use W/S para acelerar/frear e A/D para virar; pressione E novamente para sair. NPCs de pedestres e profissionais têm patrulha curta e animação procedural simples. Esta implementação ainda precisa ser aberta e testada no Godot 4.3; física, colisões, câmera, desempenho e controles Android não foram validados em aparelho real. As viaturas e serviços ainda não possuem chamadas de emergência, perseguições ou missões completas.
+Os veículos de emergência agora usam controlador de direção próprio: aproxime-se e pressione E (ou o botão Entrar/Sair no celular), use W/S para acelerar/frear e A/D para virar; pressione E novamente para sair. NPCs de pedestres e profissionais têm patrulha curta e animação procedural simples. O salvamento usa um arquivo local `user://caramelo_rp_save.cfg`; no Android, os botões SALVAR e CARREGAR ficam na interface. Esta implementação ainda precisa ser aberta e testada no Godot 4.3; física, colisões, câmera, desempenho e controles Android não foram validados em aparelho real. As viaturas e serviços ainda não possuem chamadas de emergência, perseguições ou missões completas.
 
 ## Direção do projeto
 
