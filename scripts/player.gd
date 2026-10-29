@@ -15,6 +15,13 @@ var weapon_visuals: Node3D
 var selected_weapon := 0
 var character_visuals: Node3D
 var current_vehicle: Node3D = null
+var hud: CanvasLayer
+var magazine_size := 12
+var ammo_in_magazine := 12
+var reserve_ammo := 72
+var is_reloading := false
+var reload_duration := 1.25
+var weapon_display_name := "PISTOLA"
 
 func _ready() -> void:
     add_to_group("player")
@@ -30,6 +37,9 @@ func _ready() -> void:
     var mobile_script = preload("res://scripts/mobile_controls.gd")
     var mobile_ui = mobile_script.new()
     get_tree().root.add_child.call_deferred(mobile_ui)
+    hud = preload("res://scripts/game_hud.gd").new()
+    get_tree().root.add_child.call_deferred(hud)
+    _update_ammo_hud()
 
 func _create_weapon_visuals() -> void:
     var visuals_script = preload("res://scripts/weapon_visuals.gd")
@@ -51,7 +61,9 @@ func _select_weapon(index: int) -> void:
     ]
     if is_instance_valid(character_visuals):
         character_visuals.call("set_weapon_visible", selected_weapon <= 6)
+    weapon_display_name = weapon_names[selected_weapon]
     GameState.show_message("Equipado: " + weapon_names[selected_weapon])
+    _update_ammo_hud()
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventKey and event.pressed and not event.echo:
@@ -66,6 +78,7 @@ func _unhandled_input(event: InputEvent) -> void:
             KEY_Z: _select_weapon(7)
             KEY_X: _select_weapon(8)
             KEY_C: _select_weapon(9)
+            KEY_R: _reload_weapon()
     if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
         _rotate_camera(event.relative)
     if event is InputEventScreenDrag:
@@ -108,6 +121,8 @@ func _physics_process(delta: float) -> void:
 
     if Input.is_action_just_pressed("interact"):
         _try_enter_vehicle()
+    if Input.is_action_just_pressed("reload"):
+        _reload_weapon()
     if Input.is_action_just_pressed("shoot"):
         _use_firearm()
     if Input.is_action_just_pressed("melee"):
@@ -116,9 +131,16 @@ func _physics_process(delta: float) -> void:
         _use_handcuffs()
 
 func _use_firearm() -> void:
+    if is_reloading or selected_weapon > 6:
+        return
     if shot_cooldown > 0.0:
         return
-    shot_cooldown = 0.35
+    if ammo_in_magazine <= 0:
+        GameState.show_message("Sem munição no carregador. Aperte R para recarregar.")
+        return
+    ammo_in_magazine -= 1
+    _update_ammo_hud()
+    shot_cooldown = 0.22 if selected_weapon in [3,4,5] else 0.42
     var from := camera.global_position
     var to := from + (-camera.global_transform.basis.z * 65.0)
     var query := PhysicsRayQueryParameters3D.create(from, to)
@@ -177,3 +199,21 @@ func _try_enter_vehicle() -> void:
         nearest.call("enter_vehicle", self)
     else:
         GameState.show_message("Chegue perto de um veículo e aperte E para entrar.")
+
+func _update_ammo_hud() -> void:
+    if is_instance_valid(hud):
+        hud.call("set_ammo", ammo_in_magazine, reserve_ammo, weapon_display_name)
+
+func _reload_weapon() -> void:
+    if is_reloading or selected_weapon > 6 or ammo_in_magazine >= magazine_size or reserve_ammo <= 0:
+        return
+    is_reloading = true
+    GameState.show_message("Recarregando...")
+    await get_tree().create_timer(reload_duration).timeout
+    var needed := magazine_size - ammo_in_magazine
+    var loaded := mini(needed, reserve_ammo)
+    ammo_in_magazine += loaded
+    reserve_ammo -= loaded
+    is_reloading = false
+    _update_ammo_hud()
+    GameState.show_message("Arma recarregada.")
