@@ -26,6 +26,9 @@ func _ready() -> void:
     add_child(character_visuals)
     _create_weapon_visuals()
     character_visuals.call("set_weapon_visible", true)
+    var mobile_script = preload("res://scripts/mobile_controls.gd")
+    var mobile_ui = mobile_script.new()
+    get_tree().root.add_child.call_deferred(mobile_ui)
 
 func _create_weapon_visuals() -> void:
     var visuals_script = preload("res://scripts/weapon_visuals.gd")
@@ -63,13 +66,20 @@ func _unhandled_input(event: InputEvent) -> void:
             KEY_X: _select_weapon(8)
             KEY_C: _select_weapon(9)
     if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-        rotate_y(-event.relative.x * mouse_sensitivity)
-        camera_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
-        camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-55), deg_to_rad(35))
+        _rotate_camera(event.relative)
+    if event is InputEventScreenDrag:
+        # Arraste na tela para girar a câmera no Android.
+        if event.position.x > get_viewport().get_visible_rect().size.x * 0.32:
+            _rotate_camera(event.relative)
     if event.is_action_pressed("ui_cancel"):
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
     if event is InputEventMouseButton and event.pressed and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
         Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _rotate_camera(relative: Vector2) -> void:
+    rotate_y(-relative.x * mouse_sensitivity)
+    camera_pivot.rotate_x(-relative.y * mouse_sensitivity)
+    camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-55), deg_to_rad(35))
 
 func _physics_process(delta: float) -> void:
     shot_cooldown = maxf(0.0, shot_cooldown - delta)
