@@ -10,6 +10,7 @@ func _ready() -> void:
     _add_hold_button("CORRER", "sprint", Vector2(40, -265), Vector2(112, 54))
     _add_hold_button("PULAR", "jump", Vector2(-205, -205), Vector2(100, 62))
     _add_hold_button("ATIRAR", "shoot", Vector2(-95, -125), Vector2(100, 62))
+    _add_hold_button("RECARREGAR", "reload", Vector2(-95, -195), Vector2(110, 58))
     _add_hold_button("AÇÃO", "melee", Vector2(-95, -55), Vector2(100, 58))
     _add_hold_button("ALGEMAR", "arrest", Vector2(-205, -55), Vector2(100, 58))
     _add_hold_button("ENTRAR / SAIR", "interact", Vector2(-205, -275), Vector2(150, 58))
