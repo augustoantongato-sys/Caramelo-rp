@@ -51,30 +51,14 @@ jobs:
           test -d "$ANDROID_SDK_PATH/platform-tools"
           test -f "$ANDROID_SDK_PATH/platforms/android-34/android.jar"
           test -x "$ANDROID_SDK_PATH/build-tools/34.0.0/aapt"
-          mkdir -p "$HOME/.config/godot" "$HOME/.android"
+          test -x "$ANDROID_SDK_PATH/build-tools/34.0.0/apksigner"
+          mkdir -p "$HOME/.android"
           keytool -genkeypair -noprompt -keyalg RSA -keysize 2048 -validity 10000 \
             -alias androiddebugkey -keypass android -keystore "$HOME/.android/debug.keystore" \
             -storepass android -dname "CN=Android Debug,O=Android,C=US"
-          cat > "$HOME/.config/godot/editor_settings-4.tres" <<EOF
-          [gd_resource type="EditorSettings" format=3]
-
-          [resource]
-          export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"
-          export/android/android_sdk_path = "$ANDROID_SDK_PATH"
-          export/android/debug_keystore = "$HOME/.android/debug.keystore"
-          export/android/debug_keystore_user = "androiddebugkey"
-          export/android/debug_keystore_pass = "android"
-          EOF
-          # Put the debug signing credentials directly in the export preset too.
-          # This avoids relying on per-user editor settings during headless CI export.
-          sed -i "/^\[preset\.0\.options\]/a keystore/debug=\"$HOME/.android/debug.keystore\"\nkeystore/debug_user=\"androiddebugkey\"\nkeystore/debug_password=\"android\"" export_presets.cfg
           echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> "$GITHUB_ENV"
           echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$HOME/.android/debug.keystore" >> "$GITHUB_ENV"
-          echo "GODOT_ANDROID_KEYSTORE_DEBUG_USER=androiddebugkey" >> "$GITHUB_ENV"
-          echo "GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD=android" >> "$GITHUB_ENV"
           echo "Android SDK: $ANDROID_SDK_PATH"
-          cat "$HOME/.config/godot/editor_settings-4.tres"
-          grep -A8 '^\[preset.0.options\]' export_presets.cfg
           test -x /usr/lib/jvm/java-17-openjdk-amd64/bin/java
 
       - name: Import project resources
@@ -83,19 +67,25 @@ jobs:
       - name: Run headless gameplay smoke test
         run: godot --headless --path . --quit-after 120
 
-      - name: Diagnose and export Android APK
+      - name: Export, sign and verify Android APK
         run: |
+          set -eu
           mkdir -p build
-          export_status=0
-          godot --headless --path . --verbose --export-debug "Android" build/CarameloRP.apk > /tmp/android-export.log 2>&1 || export_status=$?
-          cat /tmp/android-export.log
-          if [ "$export_status" -ne 0 ] || [ ! -s build/CarameloRP.apk ]; then
-            echo "=== Relevant diagnostics ==="
-            grep -Ei "error|warning|android|sdk|keystore|template|gradle|build.tools|export" /tmp/android-export.log | tail -n 250 || true
+          godot --headless --path . --verbose --export-debug "Android" build/CarameloRP-unsigned.apk > /tmp/android-export.log 2>&1 || {
+            cat /tmp/android-export.log
             exit 1
-          fi
+          }
+          test -s build/CarameloRP-unsigned.apk
+          "$ANDROID_SDK_PATH/build-tools/34.0.0/apksigner" sign \
+            --ks "$HOME/.android/debug.keystore" \
+            --ks-key-alias androiddebugkey \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --out build/CarameloRP.apk build/CarameloRP-unsigned.apk
+          "$ANDROID_SDK_PATH/build-tools/34.0.0/apksigner" verify --verbose build/CarameloRP.apk
           file build/CarameloRP.apk
           ls -lh build/CarameloRP.apk
+          rm build/CarameloRP-unsigned.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
