@@ -2,6 +2,7 @@ extends Node3D
 
 var mission_manager := MissionManager.new()
 var territory_manager := TerritoryManager.new()
+var job_system := CarameloJobSystem.new()
 var hud: CanvasLayer
 var message_label: Label
 var mission_label: Label
@@ -18,7 +19,10 @@ func _ready() -> void:
     add_to_group("game_manager")
     add_child(mission_manager)
     add_child(territory_manager)
+    add_child(job_system)
     mission_manager.mission_updated.connect(_on_mission_updated)
+    job_system.job_changed.connect(_on_job_changed)
+    job_system.job_finished.connect(_on_job_finished)
     GameState.stats_changed.connect(_refresh_hud)
     GameState.message_changed.connect(_show_message)
     _create_hud()
@@ -67,6 +71,8 @@ func _process(_delta: float) -> void:
     if not is_instance_valid(player):
         return
     var near_contact := player.global_position.distance_to(Vector3(5, 0, -8)) < 3.5
+    var nearby_job := job_system.get_nearby_job(player.global_position)
+    var has_active_job := job_system.active_job >= 0
     var near_management := player.global_position.distance_to(Vector3(-4, 0, -12)) < 4.0
     if near_management and Input.is_action_just_pressed("hire_security"):
         territory_manager.recruit("seguranca")
@@ -78,8 +84,12 @@ func _process(_delta: float) -> void:
         territory_manager.conquer("Morro do Caramelo")
     var near_starter := player.global_position.distance_to(starter_home_door) < 3.0
     var near_apartment := player.global_position.distance_to(apartment_door) < 3.0
-    interaction_hint.visible = near_contact or near_starter or near_apartment or inside_property or near_management
-    if inside_property:
+    interaction_hint.visible = near_contact or near_starter or near_apartment or inside_property or near_management or nearby_job >= 0 or has_active_job
+    if has_active_job:
+        interaction_hint.text = "TRABALHO ATIVO: siga o marcador verde"
+    elif nearby_job >= 0:
+        interaction_hint.text = "[E] Começar trabalho: " + str(job_system.job_points[nearby_job].name)
+    elif inside_property:
         interaction_hint.text = "[E] Sair da casa"
     elif near_starter:
         interaction_hint.text = "[E] Entrar na sua casa"
@@ -88,7 +98,9 @@ func _process(_delta: float) -> void:
     else:
         interaction_hint.text = "[E] Falar com o contato / missão"
     if Input.is_action_just_pressed("interact"):
-        if inside_property:
+        if nearby_job >= 0 and not has_active_job:
+            job_system.start_job(nearby_job)
+        elif inside_property:
             _leave_property(player)
         elif near_starter:
             _enter_property(player, starter_home_door, "casa")
@@ -144,6 +156,12 @@ func _show_message(value: String) -> void:
 
 func _on_mission_updated(title: String, description: String) -> void:
     mission_label.text = "MISSÃO: " + title + "\n" + description
+
+func _on_job_changed(title: String, description: String) -> void:
+    mission_label.text = "TRABALHO: " + title + "\n" + description
+
+func _on_job_finished(message: String) -> void:
+    mission_label.text = "TRABALHO CONCLUÍDO\n" + message
 
 func _spawn_npcs() -> void:
     _spawn_npc(Vector3(8, 1, -5), CarameloNPC.Faction.POLICE, "Policial")
