@@ -15,6 +15,7 @@
 - [x] Protótipos de NPCs, missões, economia e territórios em desenvolvimento.
 - [x] Dez modelos visuais estilizados de equipamentos com formas arredondadas e seleção por teclado.
 - [x] Ambientação ampliada: pedestres decorativos, carros de cenário, moto, bicicleta, hatch de serviço com escada no teto, postes, abrigo de ônibus e skyline urbano.
+- [x] Serviços públicos de cenário: policiais com uniforme tático inspirado em patrulhamento especial, bombeiros, profissionais de saúde, viaturas, SUVs e vans blindadas, caminhões de bombeiros e ambulância SAMU estilizada.
 - [x] Detalhes adicionais na favela: caixas d'água elevadas e vergalhões aparentes nas lajes.
 - [x] Personagem procedural com braços e pernas separados, animação simples de caminhada/corrida e pose de mira.
 - [ ] Salvamento de progresso.
@@ -64,7 +65,7 @@ Caramelo-rp/
 4. Configure identificador do pacote, orientação e ícone.
 5. Exporte primeiro um APK de depuração e teste em um aparelho real.
 
-A exportação Android ainda precisa de validação e otimização em aparelhos reais. Os controles de toque serão adicionados antes de considerar a versão mobile pronta.
+A exportação Android ainda precisa de validação e otimização em aparelhos reais. Os veículos e profissionais de emergência adicionados nesta etapa são modelos decorativos de cenário; não são dirigíveis nem possuem IA ou missões funcionais ainda.
 
 ## Direção do projeto
 
