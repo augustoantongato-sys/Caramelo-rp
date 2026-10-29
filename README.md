@@ -10,11 +10,11 @@
 - [x] Primeiro bairro gerado por código: avenida, calçadas, prédios, casas em morro, bar, mercadinho e postes.
 - [x] Personagem 3D controlável com câmera em terceira pessoa.
 - [x] Movimento de caminhada, corrida e pulo por teclado.
-- [ ] Controles de toque e interface mobile.
-- [ ] Veículos dirigíveis.
+- [x] Controles de toque básicos para Android, incluindo botão Entrar/Sair de veículos.
+- [x] Veículos dirigíveis: viatura, SUV/van blindada, caminhões de bombeiros e ambulância; entrar/sair por interação e direção com WASD ou controles de toque.
 - [x] Protótipos de NPCs, missões, economia e territórios em desenvolvimento.
 - [x] Dez modelos visuais estilizados de equipamentos com formas arredondadas e seleção por teclado.
-- [x] Ambientação ampliada: pedestres decorativos, carros de cenário, moto, bicicleta, hatch de serviço com escada no teto, postes, abrigo de ônibus e skyline urbano.
+- [x] Ambientação ampliada: pedestres com patrulha simples e animação procedural de braços/pernas, carros de cenário, moto, bicicleta, hatch de serviço com escada no teto, postes, abrigo de ônibus e skyline urbano.
 - [x] Serviços públicos de cenário: policiais com uniforme tático inspirado em patrulhamento especial, bombeiros, profissionais de saúde, viaturas, SUVs e vans blindadas, caminhões de bombeiros e ambulância SAMU estilizada.
 - [x] Detalhes adicionais na favela: caixas d'água elevadas e vergalhões aparentes nas lajes.
 - [x] Personagem procedural com braços e pernas separados, animação simples de caminhada/corrida e pose de mira.
@@ -50,7 +50,7 @@ Caramelo-rp/
 | Andar | W, A, S, D ou setas |
 | Pular | Espaço |
 | Correr | Shift |
-| Câmera | Movimento do mouse |
+| Câmera | Movimento do mouse |\n| Entrar/sair de veículo | E |\n| Dirigir | W/S acelerar ou ré; A/D virar |
 | Liberar/capturar mouse | Esc / clique |
 | Selecionar pistola, revólver, rifle de precisão, submetralhadora, fuzil, metralhadora ou espingarda | 4, 5, 6, 7, 8, 9, 0 |
 | Selecionar machado, faca ou algemas | Z, X, C |
@@ -65,7 +65,7 @@ Caramelo-rp/
 4. Configure identificador do pacote, orientação e ícone.
 5. Exporte primeiro um APK de depuração e teste em um aparelho real.
 
-A exportação Android ainda precisa de validação e otimização em aparelhos reais. Os veículos e profissionais de emergência adicionados nesta etapa são modelos decorativos de cenário; não são dirigíveis nem possuem IA ou missões funcionais ainda.
+Os veículos de emergência agora usam controlador de direção próprio: aproxime-se e pressione E (ou o botão Entrar/Sair no celular), use W/S para acelerar/frear e A/D para virar; pressione E novamente para sair. NPCs de pedestres e profissionais têm patrulha curta e animação procedural simples. Esta implementação ainda precisa ser aberta e testada no Godot 4.3; física, colisões, câmera, desempenho e controles Android não foram validados em aparelho real. As viaturas e serviços ainda não possuem chamadas de emergência, perseguições ou missões completas.
 
 ## Direção do projeto
 
