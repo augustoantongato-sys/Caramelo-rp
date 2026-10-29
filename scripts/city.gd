@@ -3,6 +3,7 @@ extends Node3D
 func _ready() -> void:
     _make_environment()
     _make_city()
+    _make_city_landmarks()
     var detail_pack := preload("res://scripts/city_detail_pack.gd").new()
     detail_pack.name = "CityDetailPack"
     add_child(detail_pack)
@@ -71,3 +72,29 @@ func _make_city() -> void:
     for z in range(-40, 45, 15):
         _box(self, Vector3(0.18, 5, 0.18), Vector3(-12, 2.5, z), Color(0.12,0.12,0.12), false)
         _box(self, Vector3(1.4, 0.15, 0.3), Vector3(-11.5, 5, z), Color(0.95,0.88,0.65), false)
+
+
+func _make_city_landmarks() -> void:
+    # Equipamentos públicos e comércio para dar identidade ao primeiro bairro.
+    _landmark(Vector3(33, 0, 30), "HOSPITAL", Color(0.78, 0.82, 0.81), Color(0.12, 0.55, 0.42))
+    _landmark(Vector3(33, 0, -25), "DELEGACIA", Color(0.65, 0.72, 0.78), Color(0.12, 0.28, 0.52))
+    _landmark(Vector3(-33, 0, 31), "OFICINA", Color(0.66, 0.58, 0.46), Color(0.9, 0.42, 0.08))
+    _landmark(Vector3(-33, 0, -25), "MERCADO", Color(0.78, 0.72, 0.58), Color(0.12, 0.48, 0.22))
+
+func _landmark(center: Vector3, title: String, wall_color: Color, accent: Color) -> void:
+    # Prédio térreo com fachada, porta, vitrines e placa legível à distância.
+    _box(self, Vector3(12, 6.5, 10), center + Vector3(0, 3.25, 0), wall_color, true)
+    _box(self, Vector3(12.5, 0.35, 10.5), center + Vector3(0, 6.65, 0), accent, false)
+    _box(self, Vector3(2.0, 2.8, 0.18), center + Vector3(0, 1.45, 5.08), Color(0.16, 0.17, 0.18), false)
+    _box(self, Vector3(3.0, 1.7, 0.16), center + Vector3(-3.6, 2.2, 5.1), Color(0.25, 0.48, 0.58), false)
+    _box(self, Vector3(3.0, 1.7, 0.16), center + Vector3(3.6, 2.2, 5.1), Color(0.25, 0.48, 0.58), false)
+    _box(self, Vector3(12.2, 0.7, 0.28), center + Vector3(0, 5.25, 5.12), accent, false)
+    var sign := Label3D.new()
+    sign.text = title
+    sign.font_size = 48
+    sign.outline_size = 8
+    sign.modulate = Color(1, 1, 1)
+    sign.position = center + Vector3(0, 5.22, 5.32)
+    sign.rotation_degrees.y = 180
+    sign.pixel_size = 0.012
+    add_child(sign)
