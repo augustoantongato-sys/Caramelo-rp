@@ -29,3 +29,8 @@ interact={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":69)]}
 shoot={"deadzone":0.2,"events":[Object(InputEventMouseButton,"button_index":1)]}
 melee={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":70)]}
 arrest={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":71)]}
+
+hire_security={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":49)]}
+hire_vendor={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":50)]}
+hire_scout={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":51)]}
+conquer_area={"deadzone":0.2,"events":[Object(InputEventKey,"physical_keycode":84)]}
