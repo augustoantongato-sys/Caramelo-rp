@@ -58,6 +58,14 @@ jobs:
             -storepass android -dname "CN=Android Debug,O=Android,C=US"
           echo "JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> "$GITHUB_ENV"
           echo "GODOT_ANDROID_KEYSTORE_DEBUG_PATH=$HOME/.android/debug.keystore" >> "$GITHUB_ENV"
+          mkdir -p "$HOME/.config/godot"
+          cat > "$HOME/.config/godot/editor_settings-4.tres" <<EOF
+[gd_resource type="EditorSettings" format=3]
+[resource]
+export/android/android_sdk_path = "$ANDROID_SDK_PATH"
+export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"
+EOF
+          cp "$HOME/.android/debug.keystore" ./debug.keystore
           echo "Android SDK: $ANDROID_SDK_PATH"
           test -x /usr/lib/jvm/java-17-openjdk-amd64/bin/java
 
