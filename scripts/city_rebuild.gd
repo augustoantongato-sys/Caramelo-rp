@@ -88,8 +88,8 @@ func _vehicles()->void:
 func _spawn(kind:String,p:Vector3,spd:float)->void:
  var v:=CharacterBody3D.new()
  v.set_script(VEHICLE_SCRIPT)
- v.vehicle_name=kind
- v.max_speed=spd
+ v.set("vehicle_name",kind)
+ v.set("max_speed",spd)
  v.position=p
  add_child(v)
 func _street()->void:
